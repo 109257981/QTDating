@@ -7,7 +7,7 @@ https://docs.google.com/document/d/1oi-xls_BMbNCQnhdZosbLE3AVVS5PGfV1D5-r0h1K00/
 # Required libraries
 https://drive.google.com/open?id=1uI-tSbzm5l0Khn5WZWfOzMX-4T_lH3Wy
 
-![Screenshot](../README images/CSE 305 Required structure.png)
+![Screenshot](https://github.com/109257981/QTDating/blob/master/README%20images/CSE%20305%20Required%20structure.PNG)
 
 # Database info
 * site 	 - http://phpmyadmin.co

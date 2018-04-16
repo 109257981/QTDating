@@ -36,15 +36,19 @@ https://blackboard.stonybrook.edu/bbcswebdav/pid-4413250-dt-content-rid-30449801
 * ~~Follow tutorial to allow the project to run~~
 * ~~Team member sets up project structure~~
 * ~~Create sample homepage using tutorial~~
-* CSS, style, design
+* ~~Create beans~~
+* Create default files of all required views and their corresponding servlets
+** Home screen
+** Signup
+** Login
+** User page 
+** Customer screen
+** Profiles screen
+** Customer-rep screen
+** Manager screen
 * Error checking
-* Home screen
-* Signup
-* Login
-* User page 
-* Customer screen
-* Profiles screen
-* Customer-rep screen
-* Manager screen
+* CSS, style, design
+
+
 
 

@@ -4,6 +4,11 @@ CSE 305 QTDating Project
 # Assignment google doc
 https://docs.google.com/document/d/1oi-xls_BMbNCQnhdZosbLE3AVVS5PGfV1D5-r0h1K00/edit
 
+# Required libraries
+https://drive.google.com/open?id=1uI-tSbzm5l0Khn5WZWfOzMX-4T_lH3Wy
+
+![Screenshot](../README images/CSE 305 Required structure.png)
+
 # Database info
 * site 	 - http://phpmyadmin.co
 * server 	 - sql9.freemysqlhosting.net
@@ -38,14 +43,14 @@ https://blackboard.stonybrook.edu/bbcswebdav/pid-4413250-dt-content-rid-30449801
 * ~~Create sample homepage using tutorial~~
 * ~~Create beans~~
 * Create default files of all required views and their corresponding servlets
-** Home screen
-** Signup
-** Login
-** User page 
-** Customer screen
-** Profiles screen
-** Customer-rep screen
-** Manager screen
+	* Home screen
+	* Signup
+	* Login
+	* User page 
+	* Customer screen
+	* Profiles screen
+	* Customer-rep screen
+	* Manager screen
 * Error checking
 * CSS, style, design
 

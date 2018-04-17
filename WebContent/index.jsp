@@ -5,20 +5,28 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>QTDating</title>
+<style>
+body {
+    background: #f959f9;
+}
+
+h1 {
+	font-size: 80px;
+	text-align: center;
+}
+
+a {
+     text-align: center;
+     display: block;
+     font-size: 25px;
+}
+</style>
 </head>
 <body>
  
-  <h1>Hello JSP</h1>
- 
-  <%
-      java.util.Date date = new java.util.Date();
-  %>
- 
-  <h2>
-      Now is
-      <%=date.toString()%>
-  </h2>
+  <h1>QTDating</h1>
   
   <a href="${pageContext.request.contextPath}/LoginServlet" tabindex="5" class="login">Login</a>
+  <a href="${pageContext.request.contextPath}/CreateAcctServlet" tabindex="5" class="login">Create Account</a>
 </body>
 </html>

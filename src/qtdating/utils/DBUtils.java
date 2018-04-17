@@ -83,4 +83,31 @@ public class DBUtils {
 		return null;
 	}
 	
+	public static Person insertPerson(Connection conn, String SSN, String Password, String First, String Last,
+										String Street, String City, String State, int Zipcode, String Email,
+										String Telephone){
+		
+		String sql = "INSERT INTO Person(SSN, Password, FirstName, LastName, Street, City, State, Zipcode, Email, Telephone)"
+					+ "VALUES(?,?,?,?,?,?,?,?,?,?)";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, SSN);
+			ps.setString(2, Password);
+			ps.setString(3, First);
+			ps.setString(4, Last);
+			ps.setString(5, Street);
+			ps.setString(6, City);
+			ps.setString(7, State);
+			ps.setInt(8, Zipcode);
+			ps.setString(9, Email);
+			ps.setString(10, Telephone);
+			ps.executeUpdate();
+			return new Person(SSN, Password, First, Last, Street, City, State, Zipcode, Email, Telephone);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }

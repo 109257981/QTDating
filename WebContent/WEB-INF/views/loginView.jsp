@@ -1,6 +1,29 @@
 <!DOCTYPE html>
 <html>
 	<head>
+	<style>
+		body {
+		    background: #f959f9;
+		}
+		h1 {
+			font-size: 80px;
+			text-align: center;
+		}
+		a {
+		     text-align: center;
+		     display: block;
+		     font-size: 25px;
+		}
+		input {
+			display: block;
+			margin: 0 auto;
+		}
+		button {
+			display: block;
+			margin: 0 auto;
+		}
+		
+	</style>
 	</head>
 	<body>
 		<div class="container">

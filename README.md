@@ -104,3 +104,8 @@ https://blackboard.stonybrook.edu/bbcswebdav/pid-4413250-dt-content-rid-30449801
 
 
 * testing commits
+
+# Random Errors when pulling from GitHub
+*Go to project -> properties -> go to libraries tab -> Click on JRE System Library,
+* then click on "Add Library", select JRE System Library, click next and then select "Alternate
+*JRE" and choose the installed JRE, then click finish and then apply.

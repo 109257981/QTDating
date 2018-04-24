@@ -11,9 +11,9 @@ public class MySQLConnUtils {
 	 
      // Note: Change the connection parameters accordingly.
      String hostName = "sql9.freemysqlhosting.net";
-     String dbName = "sql9232308";
-     String userName = "sql9232308";
-     String password = "blNIY3AkF5";
+     String dbName = "sql9234361";
+     String userName = "sql9234361";
+     String password = "kMK2vmlhl8";
      return getMySQLConnection(hostName, dbName, userName, password);
  }
   

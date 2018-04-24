@@ -15,9 +15,9 @@ https://drive.google.com/open?id=1uI-tSbzm5l0Khn5WZWfOzMX-4T_lH3Wy
 # Database info
 * site 	 - http://phpmyadmin.co
 * server 	 - sql9.freemysqlhosting.net
-* database - sql9232308
-* username - sql9232308
-* password - blNIY3AkF5
+* database - sql9234361
+* username - sql9234361
+* password - kMK2vmlhl8
 
 # Package info
 * QTDating/Java Resources/src/...

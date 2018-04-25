@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import qtdating.beans.Employee;
 import qtdating.beans.Person;
+import qtdating.beans.Profile;
  
 public class DBUtils {
 	
@@ -124,6 +126,37 @@ public class DBUtils {
 				int hr = rs.getInt("HourlyRate");
 				return new Employee(ssn, role, sd, hr);
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static ArrayList<Profile> getProfile(Connection conn, String SSN){
+		String sql = "SELECT * FROM Profile WHERE SSN = ?";
+		ArrayList<Profile> profiles = new ArrayList<>();
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, SSN);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				String profileID = rs.getString("ProfileID");
+				String ssn = rs.getString("SSN");
+				int age = rs.getInt("Age");
+				int datingAgeRangeStart = rs.getInt("DatingAgeRangeStart");
+				int datingAgeRangeEnd = rs.getInt("DatingAgeRangeEnd");
+				int datingGeoRange = rs.getInt("DatinGeoRange");
+				String m_F = rs.getString("M_F");
+				String hobbies = rs.getString("Hobbies");
+				int height = rs.getInt("Height");
+				int weight = rs.getInt("Weight");
+				String hairColor = rs.getString("HairColor");
+				String creationDate = rs.getString("CreationDate");
+				String lastModDate = rs.getString("LastModDate");
+				profiles.add(new Profile(profileID, ssn, age, datingAgeRangeStart, datingAgeRangeEnd,
+						datingGeoRange, m_F, hobbies, height, weight, hairColor, creationDate, lastModDate));
+			}
+			return profiles;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

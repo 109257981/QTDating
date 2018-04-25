@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import qtdating.beans.Date;
 import qtdating.beans.Employee;
+import qtdating.beans.Likes;
 import qtdating.beans.Person;
 import qtdating.beans.Profile;
  
@@ -190,5 +192,24 @@ public class DBUtils {
 		}
 		return null;
 	
+	}
+	
+	public static ArrayList<Likes> getPendingDates(Connection conn, String pID){
+		String sql = "SELECT * FROM Date WHERE Likee = ?";
+		ArrayList<Likes> pendingDates = new ArrayList<>();
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, pID);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				String liker = rs.getString("Liker");
+				String d_t = rs.getString("Date_Time");
+				pendingDates.add(new Likes(liker, pID, d_t));
+			}
+			return pendingDates;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

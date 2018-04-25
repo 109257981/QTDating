@@ -3,6 +3,9 @@ package qtdating.servlet;
 import java.io.IOException;
 import java.sql.Connection;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -50,16 +53,56 @@ public class CreateAcctServlet extends HttpServlet {
 		//doGet(request, response);
 		
 		String SSN = request.getParameter("SSN");
+		// SSN only contains digits
+		Matcher m = Pattern.compile("[0-9]+").matcher(SSN); 
+		if (m.matches() == false) { } // handle error
+		
 		String PassWord = request.getParameter("PassWord");
 		String FirstName = request.getParameter("FirstName");
+		
+		// Only alphabetic letters and dashes (e.g. Anne-Marie)
+        m = Pattern.compile("(([a-zA-Z])+(-([a-zA-Z]))?)+").matcher(FirstName);
+		if (m.matches() == false) { } // handle error
+
+        
+		// Same here
 		String LastName = request.getParameter("LastName");
-		String Street = request.getParameter("Address");
+		 m = Pattern.compile("(([a-zA-Z])+(-([a-zA-Z]))?)+").matcher(LastName);
+		if (m.matches() == false) { } // handle error
+		
+		// Non empty
+		String Street = request.getParameter("Address");	
+		m = Pattern.compile(".+").matcher(Street);
+		if (m.matches() == false) { } // handle error
+		
+		// Non empty
 		String City = request.getParameter("City");
+		m = Pattern.compile(".+").matcher(City);
+		if (m.matches() == false) { } // handle error
+
+		// Can later do the combobox
 		String State = request.getParameter("State");
+		
 		String ZipCodeS = request.getParameter("ZipCode");
-		int ZipCode = Integer.parseInt(ZipCodeS);
+		// Zip only contains digits
+		m = Pattern.compile("[0-9]+").matcher(ZipCodeS); 
+		int ZipCode = 0;   // for now
+		if (m.matches() == false) { }  // handle error
+		else {
+			ZipCode = Integer.parseInt(ZipCodeS); // to avoid atoi() trouble
+		}
+		
+		// Only valid email addresses
 		String Email = request.getParameter("Email");
+		m = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,10}$",
+				Pattern.CASE_INSENSITIVE).matcher(Email);
+		if (m.matches() == false) { }  // handle error
+		
+
 		String Telephone = request.getParameter("Telephone");
+		// Only digits for now, will discuss what is valid
+		m = Pattern.compile("[0-9]+").matcher(Telephone); 
+		if (m.matches() == false) { }  // handle error
 		
 		Person person = null;
 		boolean hasError = false;

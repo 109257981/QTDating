@@ -194,17 +194,26 @@ public class DBUtils {
 	
 	}
 	
-	public static ArrayList<Likes> getPendingDates(Connection conn, String pID){
-		String sql = "SELECT * FROM Date WHERE Likee = ?";
-		ArrayList<Likes> pendingDates = new ArrayList<>();
+	public static ArrayList<Date> getPendingDates(Connection conn, String pID){
+		String sql = "SELECT * FROM Date WHERE Profile1 = ? OR Profile2 = ?";
+		ArrayList<Date> pendingDates = new ArrayList<>();
 		try{
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, pID);
+			ps.setString(2, pID);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()){
-				String liker = rs.getString("Liker");
+				String p1 = rs.getString("Profile1");
+				String p2 = rs.getString("Profile2");
+				String custRep = rs.getString("CustRep");
 				String d_t = rs.getString("Date_Time");
-				pendingDates.add(new Likes(liker, pID, d_t));
+				String loc = rs.getString("Location");
+				int bookingFee = rs.getInt("BookingFee");
+				String comments = rs.getString("Comments");
+				int user1Rating = rs.getInt("User1Rating");
+				int user2Rating = rs.getInt("User2Rating");
+				boolean geoDate = rs.getBoolean("GeoDate");
+				pendingDates.add(new Date(p1, p2, custRep, d_t, loc, bookingFee, comments, user1Rating, user2Rating, geoDate));
 			}
 			return pendingDates;
 		}catch (SQLException e) {

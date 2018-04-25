@@ -3,12 +3,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link rel="stylesheet" href="Resources/Styles/index_style.css"> 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>QTDating</title>
 
+<<<<<<< HEAD
  <link rel="stylesheet" href="index_style.css"> 
+=======
+ 
+>>>>>>> branch 'master' of https://github.com/109257981/QTDating.git
 
-
+ 
 </head>
 <body>
  

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import qtdating.beans.Employee;
 import qtdating.beans.Person;
  
 public class DBUtils {
@@ -104,6 +105,25 @@ public class DBUtils {
 			ps.executeUpdate();
 			return new Person(SSN, Password, First, Last, Street, City, State, Zipcode, Email, Telephone);
 			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static Employee getEmployee(Connection conn, String SSN) {
+		String sql = "SELECT * FROM Employee WHERE SSN = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, SSN);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				String ssn = rs.getString("SSN");
+				String role = rs.getString("Role");
+				String sd = rs.getString("StartDate");
+				int hr = rs.getInt("HourlyRate");
+				return new Employee(ssn, role, sd, hr);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

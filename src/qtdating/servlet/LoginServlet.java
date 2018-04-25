@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import qtdating.beans.Employee;
 import qtdating.beans.Person;
 import qtdating.utils.DBUtils;
 import qtdating.utils.MyUtils;
@@ -61,15 +62,46 @@ public class LoginServlet extends HttpServlet {
 		if (person == null) {
 		    hasError = true;
 		}        
-        if(hasError) {}
+        if(hasError) { 
+            // Forward to /WEB-INF/views/login.jsp
+            RequestDispatcher dispatcher //
+                    = this.getServletContext().getRequestDispatcher("/WEB-INF/views/loginView.jsp");
+ 
+            dispatcher.forward(request, response);
+        	
+        }
         
         // If no error
         // Store user information in Session
         // And redirect to userInfo page.
         else {
-            HttpSession session = request.getSession();
-			MyUtils.storePerson(session, DBUtils.getPerson(MyUtils.getStoredConnection(request), email));
-            response.sendRedirect(request.getContextPath() + "/HomeServlet");
+        	//check if that person is an employee
+        	Employee e=null;
+        	e = DBUtils.getEmployee(conn, person.getSsn());
+        	
+        	if(e==null)
+        	{      	
+	            HttpSession session = request.getSession();
+				MyUtils.storePerson(session, DBUtils.getPerson(MyUtils.getStoredConnection(request), email));
+	            response.sendRedirect(request.getContextPath() + "/HomeServlet");
+        	}
+        	else
+        	{
+        		if((e.getRole()).equals("Manager"))
+        		{
+        			HttpSession session = request.getSession();
+    				MyUtils.storePerson(session, DBUtils.getPerson(MyUtils.getStoredConnection(request), email));
+    				RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/managerHomeView.jsp");
+    		        dispatcher.forward(request, response);
+        		}
+        		else
+        		{
+        			HttpSession session = request.getSession();
+    				MyUtils.storePerson(session, DBUtils.getPerson(MyUtils.getStoredConnection(request), email));
+    				RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/custRepHomeView.jsp");
+    		        dispatcher.forward(request, response);
+        		}
+        	}
         }
 	}
 

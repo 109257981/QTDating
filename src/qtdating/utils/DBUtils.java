@@ -163,4 +163,32 @@ public class DBUtils {
 		return null;
 	}
 	
+	public static Profile insertProfile(Connection conn, String pID, String ssn, int age, int datingAgeStart, int datingAgeEnd,
+			int datingGeoRange, String m_F, String hobbies, int height, int weight, String hairColor, String creationDate, String lastModDate){
+		
+		String sql = "INSERT INTO Profile(ProfileID, OwnerSSN, Age, DatingAgeRangeStart, DatingAgeRangeEnd, DatinGeoRange, M_F, Hobbies, Height, Weight, HairColor, CreationDate, LastModDate"
+				+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, pID);
+			ps.setString(2, ssn);
+			ps.setInt(3, age);
+			ps.setInt(4, datingAgeStart);
+			ps.setInt(5, datingAgeEnd);
+			ps.setInt(6, datingGeoRange);
+			ps.setString(7, m_F);
+			ps.setString(8, hobbies);
+			ps.setInt(9, height);
+			ps.setInt(10, weight);
+			ps.setString(11, hairColor);
+			ps.setString(12, creationDate);
+			ps.setString(13, lastModDate);
+			ps.executeUpdate();
+			return new Profile(pID, ssn, age, datingAgeStart, datingAgeEnd, datingGeoRange, m_F, hobbies, height, weight, hairColor, creationDate, lastModDate);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	
+	}
 }

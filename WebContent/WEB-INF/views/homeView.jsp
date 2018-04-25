@@ -18,20 +18,35 @@ header,footer{
 nav {
     background-color: #d7dde5;
     float: left;
-    max-width: 160px;
     margin: 0;
-    padding: 1em;
     border-style: solid;
     border-color: #a6a89f;
+    max-width: 220px;
 }
 
 nav ul {
     list-style-type: none;
+    margin: 0;
     padding: 0;
+    background-color: #d7dde5;
+    float: left;
 }
-   
-nav ul a {
+
+nav ul li a {
+    display: block;
+    color: #000;
+    padding: 8px 16px;
     text-decoration: none;
+    border-bottom: 1px solid #555;
+}
+nav ul li:last-child {
+    border-bottom: none;
+}
+
+/* Change the link color on hover */
+nav ul li a:hover {
+    background-color: #555;
+    color: white;
 }
 
 .button {
@@ -77,7 +92,7 @@ nav ul a {
   </ul>
 </nav>
 		<h1>Home</h1>
-		<h3>Hello <b>${person.email}</b></h3>
+		<h3>Hello User <b>${person.email}</b></h3>
 		<h3>Your Profiles</h3>
 		
 		<footer>

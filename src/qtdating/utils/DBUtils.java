@@ -212,4 +212,19 @@ public class DBUtils {
 		}
 		return null;
 	}
+	
+	public static boolean cancelDate(Connection conn, String p1, String p2, String d_t){
+		String sql = "DELETE FROM Date WHERE Profile1 = ? AND Profile2 = ? AND Date_Time = ?";
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, p1);
+			ps.setString(2, p2);
+			ps.setString(3, d_t);
+			ps.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

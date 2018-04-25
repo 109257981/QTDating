@@ -5,22 +5,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>QTDating</title>
-<style>
-body {
-    background: #f959f9;
-}
 
-h1 {
-	font-size: 80px;
-	text-align: center;
-}
+ <link rel="stylesheet" href="style.css"> 
 
-a {
-     text-align: center;
-     display: block;
-     font-size: 25px;
-}
-</style>
+
 </head>
 <body>
  

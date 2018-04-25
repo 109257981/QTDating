@@ -57,13 +57,23 @@ public class CreateAcctServlet extends HttpServlet {
 		Matcher m = Pattern.compile("[0-9]+").matcher(SSN); 
 		if (m.matches() == false) { } // handle error
 		
-		String PassWord = request.getParameter("PassWord");
-		String FirstName = request.getParameter("FirstName");
 		
-		// Only alphabetic letters and dashes (e.g. Anne-Marie)
+		// Password only contain letters, digits, [@*_] and at least n long
+		String PassWord = request.getParameter("PassWord");
+		m = Pattern.compile("[0-9a-zA-Z@#\\$_%&\\*]{3,}").matcher(PassWord); 
+		
+		String ConfirmPass = request.getParameter("ConfirmPass");
+		
+		// Passwords don't match! 
+		if (!PassWord.equals(ConfirmPass)) {   // handle error
+			
+		}
+		
+		
+		// Names: Only alphabetic letters and dashes (e.g. Anne-Marie)
+		String FirstName = request.getParameter("FirstName");
         m = Pattern.compile("(([a-zA-Z])+(-([a-zA-Z]))?)+").matcher(FirstName);
 		if (m.matches() == false) { } // handle error
-
         
 		// Same here
 		String LastName = request.getParameter("LastName");

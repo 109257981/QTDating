@@ -16,8 +16,11 @@
 				<input type="text" name="LastName" class="form-control" placeholder="ex. Doe">
 				<p id="EmailP">Email</p>
 				<input type="text" name="Email" class="form-control" placeholder="ex. JD123@gmail.com">
-				<p id="PassWordP">PassWord</p>
+				<p id="PassWordP">Password</p>
 				<input type="text" name="PassWord" class="form-control" placeholder="ex. abcd1234">
+				<p id="ConfirmPassP">Confirm Password</p>
+				<input type="text" name="ConfirmPass" class="form-control" placeholder="ex. abcd1234">
+				
 				<p id="AddressP">Address</p>
 				<input type="text" name="Address" class="form-control" placeholder="ex. 123 Park Ave">
 				<p id="CityP">City</p>

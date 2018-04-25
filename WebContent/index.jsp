@@ -7,12 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>QTDating</title>
 
-<<<<<<< HEAD
- <link rel="stylesheet" href="index_style.css"> 
-=======
- 
->>>>>>> branch 'master' of https://github.com/109257981/QTDating.git
 
+ <link rel="stylesheet" href="index_style.css"> 
  
 </head>
 <body>

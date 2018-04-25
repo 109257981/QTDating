@@ -91,14 +91,14 @@ public class LoginServlet extends HttpServlet {
         		{
         			HttpSession session = request.getSession();
     				MyUtils.storePerson(session, DBUtils.getPerson(MyUtils.getStoredConnection(request), email));
-    				RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/managerHomeView.jsp");
+    				RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/managerView.jsp");
     		        dispatcher.forward(request, response);
         		}
         		else
         		{
         			HttpSession session = request.getSession();
     				MyUtils.storePerson(session, DBUtils.getPerson(MyUtils.getStoredConnection(request), email));
-    				RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/custRepHomeView.jsp");
+    				RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/custRepresentativeView.jsp");
     		        dispatcher.forward(request, response);
         		}
         	}

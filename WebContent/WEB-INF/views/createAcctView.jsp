@@ -2,34 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-body {
-		    background: #f959f9;
-		}
-		h1 {
-			font-size: 80px;
-			text-align: center;
-		}
-		a {
-		     text-align: center;
-		     display: block;
-		     font-size: 25px;
-		}
-		input {
-			display: block;
-			margin: 0 auto;
-		}
-		button {
-			display: block;
-			margin: 0 auto;
-			position: relative;
-			top: +40px;
-		}
-		p {
-		text-align: center;
-		font-size: 20px;
-		}
-</style>
+<link rel="stylesheet" href="Resources/Styles/index_style.css"> 
 </head>
 <body>
 <div class="container">

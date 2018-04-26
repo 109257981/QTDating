@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import qtdating.beans.Account;
+import qtdating.beans.BlindDate;
 import qtdating.beans.Date;
 import qtdating.beans.Employee;
 import qtdating.beans.Likes;
@@ -225,26 +226,27 @@ public class DBUtils {
 	
 	}
 	
-	public static ArrayList<Date> getPendingDates(Connection conn, String pID){
-		String sql = "SELECT * FROM Date WHERE Profile1 = ? OR Profile2 = ?";
+	public static ArrayList<Date> getPendingDates(Connection conn, String pID, String d_t){
+		String sql = "SELECT * FROM Date WHERE Profile1 = ? OR Profile2 = ? AND Date_Time >= ?";
 		ArrayList<Date> pendingDates = new ArrayList<>();
 		try{
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, pID);
 			ps.setString(2, pID);
+			ps.setString(3, d_t);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()){
 				String p1 = rs.getString("Profile1");
 				String p2 = rs.getString("Profile2");
 				String custRep = rs.getString("CustRep");
-				String d_t = rs.getString("Date_Time");
+				String dateTime = rs.getString("Date_Time");
 				String loc = rs.getString("Location");
 				int bookingFee = rs.getInt("BookingFee");
 				String comments = rs.getString("Comments");
 				int user1Rating = rs.getInt("User1Rating");
 				int user2Rating = rs.getInt("User2Rating");
 				boolean geoDate = rs.getBoolean("GeoDate");
-				pendingDates.add(new Date(p1, p2, custRep, d_t, loc, bookingFee, comments, user1Rating, user2Rating, geoDate));
+				pendingDates.add(new Date(p1, p2, custRep, dateTime, loc, bookingFee, comments, user1Rating, user2Rating, geoDate));
 			}
 			return pendingDates;
 		}catch (SQLException e) {
@@ -305,16 +307,154 @@ public class DBUtils {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, ssn);
 			ps.setInt(2, cardNumber);
-			ps.setString(3, String.valueOf((int)(Math.random()*99999 + 10000)));
+			String actNum = String.valueOf((int)(Math.random()*99999 + 10000));
+			ps.setString(3, actNum);
 			ps.setString(4, creationDate);
-			ResultSet rs = ps.executeQuery();
-			if(rs.next()){
-				String acctNum = rs.getString("AcctNum");
-				return new Account(ssn, cardNumber, acctNum, creationDate);
-			}
+			ps.executeUpdate();
+			return new Account(ssn, cardNumber, actNum, creationDate);
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
+	
+	public static BlindDate referProfile(Connection conn, String profileA, String profileB, String profileC, String d_t){
+		String sql = "INSER INTO BlindDate(ProfileA, ProfileB, ProfileC, Date_Time) VALUES(?,?,?,?)";
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, profileA);
+			ps.setString(2, profileB);
+			ps.setString(3, profileC);
+			ps.setString(4, d_t);
+			ps.executeUpdate();
+			return new BlindDate(profileA, profileB, profileC, d_t);
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static ArrayList<Date> getPastDates(Connection conn, String pID, String d_t){
+		String sql = "SELECT * FROM Date WHERE Profile1 = ? OR Profile2 = ? AND Date_Time < ?";
+		ArrayList<Date> pastDates = new ArrayList<>();
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, pID);
+			ps.setString(2, pID);
+			ps.setString(3, d_t);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				String p1 = rs.getString("Profile1");
+				String p2 = rs.getString("Profile2");
+				String custRep = rs.getString("CustRep");
+				String dateTime = rs.getString("Date_Time");
+				String loc = rs.getString("Location");
+				int bookingFee = rs.getInt("BookingFee");
+				String comments = rs.getString("Comments");
+				int user1Rating = rs.getInt("User1Rating");
+				int user2Rating = rs.getInt("User2Rating");
+				boolean geoDate = rs.getBoolean("GeoDate");
+				pastDates.add(new Date(p1, p2, custRep, dateTime, loc, bookingFee, comments, user1Rating, user2Rating, geoDate));
+			}
+			return pastDates;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static ArrayList<Profile> getFavorites(Connection conn, String pID){
+		String sql = "SELECT * FROM Profile P, Likes L WHERE P.ProfileID = L.Likee AND L.Liker = ?";
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, pID);
+			ResultSet rs = ps.executeQuery();
+			ArrayList<Profile> profiles = new ArrayList<>();
+			while(rs.next()){
+				String profileID = rs.getString("ProfileID");
+				String ssn = rs.getString("OwnerSSN");
+				int age = rs.getInt("Age");
+				int datingAgeRangeStart = rs.getInt("DatingAgeRangeStart");
+				int datingAgeRangeEnd = rs.getInt("DatingAgeRangeEnd");
+				int datingGeoRange = rs.getInt("DatinGeoRange");
+				String m_F = rs.getString("M_F");
+				String hobbies = rs.getString("Hobbies");
+				int height = rs.getInt("Height");
+				int weight = rs.getInt("Weight");
+				String hairColor = rs.getString("HairColor");
+				String creationDate = rs.getString("CreationDate");
+				String lastModDate = rs.getString("LastModDate");
+				profiles.add(new Profile(profileID, ssn, age, datingAgeRangeStart, datingAgeRangeEnd,
+						datingGeoRange, m_F, hobbies, height, weight, hairColor, creationDate, lastModDate));
+			}
+			return profiles;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static ArrayList<Profile> getProfileByAge(Connection conn, int ageStart, int ageEnd){
+		String sql = "SELECT * FROM Profile WHERE age >= ? AND age <= ?";
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, ageStart);
+			ps.setInt(2, ageEnd);
+			ResultSet rs = ps.executeQuery();
+			ArrayList<Profile> profiles = new ArrayList<>();
+			while(rs.next()){
+				String profileID = rs.getString("ProfileID");
+				String ssn = rs.getString("OwnerSSN");
+				int age = rs.getInt("Age");
+				int datingAgeRangeStart = rs.getInt("DatingAgeRangeStart");
+				int datingAgeRangeEnd = rs.getInt("DatingAgeRangeEnd");
+				int datingGeoRange = rs.getInt("DatinGeoRange");
+				String m_F = rs.getString("M_F");
+				String hobbies = rs.getString("Hobbies");
+				int height = rs.getInt("Height");
+				int weight = rs.getInt("Weight");
+				String hairColor = rs.getString("HairColor");
+				String creationDate = rs.getString("CreationDate");
+				String lastModDate = rs.getString("LastModDate");
+				profiles.add(new Profile(profileID, ssn, age, datingAgeRangeStart, datingAgeRangeEnd,
+						datingGeoRange, m_F, hobbies, height, weight, hairColor, creationDate, lastModDate));
+			}
+			return profiles;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static ArrayList<Profile> getProfileBySex(Connection conn, String sex){
+		String sql = "SELECT * FROM Profile WHERE M_F = ?";
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, sex);
+			ResultSet rs = ps.executeQuery();
+			ArrayList<Profile> profiles = new ArrayList<>();
+			while(rs.next()){
+				String profileID = rs.getString("ProfileID");
+				String ssn = rs.getString("OwnerSSN");
+				int age = rs.getInt("Age");
+				int datingAgeRangeStart = rs.getInt("DatingAgeRangeStart");
+				int datingAgeRangeEnd = rs.getInt("DatingAgeRangeEnd");
+				int datingGeoRange = rs.getInt("DatinGeoRange");
+				String m_F = rs.getString("M_F");
+				String hobbies = rs.getString("Hobbies");
+				int height = rs.getInt("Height");
+				int weight = rs.getInt("Weight");
+				String hairColor = rs.getString("HairColor");
+				String creationDate = rs.getString("CreationDate");
+				String lastModDate = rs.getString("LastModDate");
+				profiles.add(new Profile(profileID, ssn, age, datingAgeRangeStart, datingAgeRangeEnd,
+						datingGeoRange, m_F, hobbies, height, weight, hairColor, creationDate, lastModDate));
+			}
+			return profiles;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }

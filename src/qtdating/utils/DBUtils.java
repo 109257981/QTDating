@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import qtdating.beans.Date;
 import qtdating.beans.Employee;
+import qtdating.beans.Likes;
 import qtdating.beans.Person;
 import qtdating.beans.Profile;
  
@@ -163,4 +165,106 @@ public class DBUtils {
 		return null;
 	}
 	
+	public static Profile insertProfile(Connection conn, String pID, String ssn, int age, int datingAgeStart, int datingAgeEnd,
+			int datingGeoRange, String m_F, String hobbies, int height, int weight, String hairColor, String creationDate, String lastModDate){
+		
+		String sql = "INSERT INTO Profile(ProfileID, OwnerSSN, Age, DatingAgeRangeStart, DatingAgeRangeEnd, DatinGeoRange, M_F, Hobbies, Height, Weight, HairColor, CreationDate, LastModDate"
+				+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, pID);
+			ps.setString(2, ssn);
+			ps.setInt(3, age);
+			ps.setInt(4, datingAgeStart);
+			ps.setInt(5, datingAgeEnd);
+			ps.setInt(6, datingGeoRange);
+			ps.setString(7, m_F);
+			ps.setString(8, hobbies);
+			ps.setInt(9, height);
+			ps.setInt(10, weight);
+			ps.setString(11, hairColor);
+			ps.setString(12, creationDate);
+			ps.setString(13, lastModDate);
+			ps.executeUpdate();
+			return new Profile(pID, ssn, age, datingAgeStart, datingAgeEnd, datingGeoRange, m_F, hobbies, height, weight, hairColor, creationDate, lastModDate);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	
+	}
+	
+	public static ArrayList<Date> getPendingDates(Connection conn, String pID){
+		String sql = "SELECT * FROM Date WHERE Profile1 = ? OR Profile2 = ?";
+		ArrayList<Date> pendingDates = new ArrayList<>();
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, pID);
+			ps.setString(2, pID);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				String p1 = rs.getString("Profile1");
+				String p2 = rs.getString("Profile2");
+				String custRep = rs.getString("CustRep");
+				String d_t = rs.getString("Date_Time");
+				String loc = rs.getString("Location");
+				int bookingFee = rs.getInt("BookingFee");
+				String comments = rs.getString("Comments");
+				int user1Rating = rs.getInt("User1Rating");
+				int user2Rating = rs.getInt("User2Rating");
+				boolean geoDate = rs.getBoolean("GeoDate");
+				pendingDates.add(new Date(p1, p2, custRep, d_t, loc, bookingFee, comments, user1Rating, user2Rating, geoDate));
+			}
+			return pendingDates;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static boolean cancelDate(Connection conn, String p1, String p2, String d_t){
+		String sql = "DELETE FROM Date WHERE Profile1 = ? AND Profile2 = ? AND Date_Time = ?";
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, p1);
+			ps.setString(2, p2);
+			ps.setString(3, d_t);
+			ps.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public static boolean commentOnDate(Connection conn, String p1, String p2, String d_t, String comment){
+		String sql = "UPDATE Date SET Comments = ? WHERE Profile1 = ? AND Profile2 = ? AND Date_Time = ?";
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, comment);
+			ps.setString(2, p1);
+			ps.setString(3, p2);
+			ps.setString(4, d_t);
+			ps.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public static boolean likeProfile(Connection conn, String liker, String likee, String d_t){
+		String sql = "INSERT INTO Likes(Liker, Likee, Date_Time) VALUES(?,?,?)";
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, liker);
+			ps.setString(2, likee);
+			ps.setString(3, d_t);
+			ps.executeUpdate();
+			return true;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

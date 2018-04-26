@@ -52,7 +52,7 @@ public class CreateNewProfileServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 				
-				//get the login user 
+				//get the login user  
 				HttpSession session = request.getSession();
 				Person person=MyUtils.getPerson(session);
 				

@@ -30,7 +30,7 @@ public class HomeServlet extends HttpServlet {
     public HomeServlet() {
         super();
         // TODO Auto-generated constructor stub
-    }
+    } 
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

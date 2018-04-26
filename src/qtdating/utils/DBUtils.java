@@ -136,7 +136,7 @@ public class DBUtils {
 	}
 	
 	public static ArrayList<Profile> getProfile(Connection conn, String SSN){
-		String sql = "SELECT * FROM Profile WHERE SSN = ?";
+		String sql = "SELECT * FROM Profile WHERE OwnerSSN = ?";
 		ArrayList<Profile> profiles = new ArrayList<>();
 		try{
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -144,7 +144,7 @@ public class DBUtils {
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()){
 				String profileID = rs.getString("ProfileID");
-				String ssn = rs.getString("SSN");
+				String ssn = rs.getString("OwnerSSN");
 				int age = rs.getInt("Age");
 				int datingAgeRangeStart = rs.getInt("DatingAgeRangeStart");
 				int datingAgeRangeEnd = rs.getInt("DatingAgeRangeEnd");

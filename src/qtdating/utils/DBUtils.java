@@ -167,6 +167,35 @@ public class DBUtils {
 		return null;
 	}
 	
+	public static Profile getSpecificProfile(Connection conn, String pID){
+		String sql = "SELECT * FROM Profile WHERE ProfileID = ?";
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, pID);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				String profileID = rs.getString("ProfileID");
+				String ssn = rs.getString("OwnerSSN");
+				int age = rs.getInt("Age");
+				int datingAgeRangeStart = rs.getInt("DatingAgeRangeStart");
+				int datingAgeRangeEnd = rs.getInt("DatingAgeRangeEnd");
+				int datingGeoRange = rs.getInt("DatinGeoRange");
+				String m_F = rs.getString("M_F");
+				String hobbies = rs.getString("Hobbies");
+				int height = rs.getInt("Height");
+				int weight = rs.getInt("Weight");
+				String hairColor = rs.getString("HairColor");
+				String creationDate = rs.getString("CreationDate");
+				String lastModDate = rs.getString("LastModDate");
+				return new Profile(profileID, ssn, age, datingAgeRangeStart, datingAgeRangeEnd,
+						datingGeoRange, m_F, hobbies, height, weight, hairColor, creationDate, lastModDate);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public static Profile insertProfile(Connection conn, String pID, String ssn, int age, int datingAgeStart, int datingAgeEnd,
 			int datingGeoRange, String m_F, String hobbies, int height, int weight, String hairColor,  Timestamp timestamp, Timestamp timestamp2){
 		

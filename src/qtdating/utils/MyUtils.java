@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import qtdating.beans.Person;
+import qtdating.beans.Profile;
 
 
 public class MyUtils {
@@ -40,7 +41,20 @@ public class MyUtils {
         Person person = (Person) session.getAttribute("person");
         return person;
     }
+    
+    // Store profile info in Session.
+    public static void storeProfile(HttpSession session, Profile profile) {
+        // On the JSP can access via ${person}
+        session.setAttribute("profile", profile);
+    }
  
+    // Get the profile information stored in the session.
+    public static Profile getProfile(HttpSession session) {
+        Profile profile= (Profile) session.getAttribute("profile");
+        return profile;
+    }
+    
+   
     // Store info in Cookie
     public static void storePersonCookie(HttpServletResponse response, Person person) {
         System.out.println("Store person cookie");

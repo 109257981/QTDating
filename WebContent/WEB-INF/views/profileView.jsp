@@ -36,7 +36,7 @@
 </nav>
 		<h1>Home</h1>
 		<h3>Hello User <b>${person.email}</b></h3>
-		<h3>Your Profiles</h3>
+		<h3>Your ProfileID <b>${profile.profileId}</b></h3>
 		
 		<footer>
 		</footer>

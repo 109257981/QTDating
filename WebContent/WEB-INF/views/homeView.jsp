@@ -30,6 +30,8 @@
 		<h3>Hello User <b>${person.email}</b></h3>
 		<h3>Your Profiles</h3>
 		
+		<form method="GET" action="${pageContext.request.contextPath}/ProfileServlet">
+		
 		<table border="1" cellpadding="5" cellspacing="1" >
        <tr>
           <th>ProfileID</th>
@@ -44,10 +46,11 @@
           <th>HairColor</th>
           <th>CreationDate</th>
           <th>LastModDate</th>
+          <th></th>
        </tr>
        <c:forEach items="${profileList}" var="profile" >
           <tr>
-             <td><a href="#">${profile.profileId}</a></td>
+             <td>${profile.profileId}</td>
              <td>${profile.age}</td>
              <td>${profile.datingAgeRangeStart}</td>
              <td>${profile.datingAgeRangeEnd}</td>
@@ -59,9 +62,14 @@
              <td>${profile.hairColor}</td>
              <td>${profile.creationDate}</td>
              <td>${profile.lastModDate}</td>
+             
+             <td><button name="btn" type="submit" value="${profile.profileId}">Use</button></td>
+             
           </tr>
        </c:forEach>
     	</table>
+		
+		</form>
 		
 		<footer>
 		</footer>

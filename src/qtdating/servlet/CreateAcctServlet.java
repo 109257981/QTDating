@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import qtdating.beans.Account;
 import qtdating.beans.Person;
 import qtdating.utils.DBUtils;
 import qtdating.utils.MyUtils;
@@ -108,16 +109,20 @@ public class CreateAcctServlet extends HttpServlet {
 				Pattern.CASE_INSENSITIVE).matcher(Email);
 		if (m.matches() == false) { }  // handle error
 		
-
+		
 		String Telephone = request.getParameter("Telephone");
 		// Only digits for now, will discuss what is valid
 		m = Pattern.compile("[0-9]+").matcher(Telephone); 
 		if (m.matches() == false) { }  // handle error
+		int cardNumber = Integer.parseInt(request.getParameter("Cardnumber"));
 		
 		Person person = null;
 		boolean hasError = false;
 		Connection conn = MyUtils.getStoredConnection(request);
 		person = DBUtils.insertPerson(conn,SSN,PassWord,FirstName,LastName,Street,City,State,ZipCode,Email,Telephone);
+		java.util.Date date = new java.util.Date();
+		String creationDate = date.toString();
+		Account act = DBUtils.createAccount(conn, SSN, cardNumber, creationDate);
 		
 		if (person == null) {
 		    hasError = true;
@@ -130,5 +135,5 @@ public class CreateAcctServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/HomeServlet");
         }
 	}
-
+		
 }

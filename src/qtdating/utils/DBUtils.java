@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import qtdating.beans.Account;
 import qtdating.beans.Date;
 import qtdating.beans.Employee;
 import qtdating.beans.Likes;
@@ -267,5 +268,24 @@ public class DBUtils {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public static Account createAccount(Connection conn, String ssn, int cardNumber, String creationDate){
+		String sql = "INSERT INTO Account(OwnerSSN, CardNumber, AcctNum, AcctCreationDate";
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, ssn);
+			ps.setInt(2, cardNumber);
+			ps.setString(3, String.valueOf((int)(Math.random()*99999 + 10000)));
+			ps.setString(4, creationDate);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()){
+				String acctNum = rs.getString("AcctNum");
+				return new Account(ssn, cardNumber, acctNum, creationDate);
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

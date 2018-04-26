@@ -252,4 +252,19 @@ public class DBUtils {
 		}
 		return false;
 	}
+	
+	public static boolean likeProfile(Connection conn, String liker, String likee, String d_t){
+		String sql = "INSERT INTO Likes(Liker, Likee, Date_Time) VALUES(?,?,?)";
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, liker);
+			ps.setString(2, likee);
+			ps.setString(3, d_t);
+			ps.executeUpdate();
+			return true;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

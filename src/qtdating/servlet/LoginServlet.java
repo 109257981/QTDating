@@ -64,11 +64,11 @@ public class LoginServlet extends HttpServlet {
 		}        
         if(hasError) { 
             // Forward to /WEB-INF/views/login.jsp
+        	request.setAttribute("errorString", "Invalid Email or Password!");
             RequestDispatcher dispatcher //
                     = this.getServletContext().getRequestDispatcher("/WEB-INF/views/loginView.jsp");
  
             dispatcher.forward(request, response);
-        	
         }
         
         // If no error

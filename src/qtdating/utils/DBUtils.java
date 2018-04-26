@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import qtdating.beans.Date;
@@ -166,9 +167,9 @@ public class DBUtils {
 	}
 	
 	public static Profile insertProfile(Connection conn, String pID, String ssn, int age, int datingAgeStart, int datingAgeEnd,
-			int datingGeoRange, String m_F, String hobbies, int height, int weight, String hairColor, String creationDate, String lastModDate){
+			int datingGeoRange, String m_F, String hobbies, int height, int weight, String hairColor,  Timestamp timestamp, Timestamp timestamp2){
 		
-		String sql = "INSERT INTO Profile(ProfileID, OwnerSSN, Age, DatingAgeRangeStart, DatingAgeRangeEnd, DatinGeoRange, M_F, Hobbies, Height, Weight, HairColor, CreationDate, LastModDate"
+		String sql = "INSERT INTO Profile(ProfileID, OwnerSSN, Age, DatingAgeRangeStart, DatingAgeRangeEnd, DatinGeoRange, M_F, Hobbies, Height, Weight, HairColor, CreationDate, LastModDate)"
 				+ "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		try{
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -183,10 +184,10 @@ public class DBUtils {
 			ps.setInt(9, height);
 			ps.setInt(10, weight);
 			ps.setString(11, hairColor);
-			ps.setString(12, creationDate);
-			ps.setString(13, lastModDate);
+			ps.setObject(12, timestamp);
+			ps.setObject(13, timestamp2);
 			ps.executeUpdate();
-			return new Profile(pID, ssn, age, datingAgeStart, datingAgeEnd, datingGeoRange, m_F, hobbies, height, weight, hairColor, creationDate, lastModDate);
+			return new Profile(pID, ssn, age, datingAgeStart, datingAgeEnd, datingGeoRange, m_F, hobbies, height, weight, hairColor, timestamp.toString(),timestamp2.toString());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

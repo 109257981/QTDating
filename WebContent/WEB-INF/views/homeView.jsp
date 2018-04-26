@@ -23,7 +23,7 @@
 
 <nav>
   <ul>
-    <li><a href="#">Create New Profile</a></li>
+    <li><a href="${pageContext.request.contextPath}/CreateNewProfileServlet">Create New Profile</a></li>
   </ul>
 </nav>
 		<h1>Home</h1>

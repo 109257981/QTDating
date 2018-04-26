@@ -31,6 +31,8 @@
 				<input type="text" name="ZipCode" class="form-control" placeholder="ex. 11780">
 				<p id="TelephoneP">Telephone Number</p>
 				<input type="text" name="Telephone" class="form-control" placeholder="ex. 1234567890">
+				<p id="CarnumberP">Credit Card Number</p>
+				<input type="text" name="Cardnumber" class="form-control" placeholder="ex. 1234567890">
 				<button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit">
 					Create Account
 				</button>

@@ -14,6 +14,7 @@ import qtdating.beans.Employee;
 import qtdating.beans.Likes;
 import qtdating.beans.Person;
 import qtdating.beans.Profile;
+import qtdating.beans.User;
  
 public class DBUtils {
 	
@@ -301,17 +302,17 @@ public class DBUtils {
 		return false;
 	}
 	
-	public static Account createAccount(Connection conn, String ssn, int cardNumber, String creationDate){
-		String sql = "INSERT INTO Account(OwnerSSN, CardNumber, AcctNum, AcctCreationDate";
+	public static Account createAccount(Connection conn, String ssn, String cardNumber, Timestamp timestamp){
+		String sql = "INSERT INTO Account(OwnerSSN, CardNumber, AcctNum, AcctCreationDate) VALUES(?,?,?,?)";
 		try{
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, ssn);
-			ps.setInt(2, cardNumber);
+			ps.setString(2, cardNumber);
 			String actNum = String.valueOf((int)(Math.random()*99999 + 10000));
 			ps.setString(3, actNum);
-			ps.setString(4, creationDate);
+			ps.setObject(4, timestamp);
 			ps.executeUpdate();
-			return new Account(ssn, cardNumber, actNum, creationDate);
+			return new Account(ssn, cardNumber, actNum, timestamp.toString());
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -452,6 +453,23 @@ public class DBUtils {
 			}
 			return profiles;
 		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static User createUser(Connection conn, String ssn, String ppp, int rating, Timestamp timestamp){
+		String sql = "INSERT INTO User1(SSN, PPP, Rating, DateOfLastAct) VALUES(?,?,?,?)";
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, ssn);
+			ps.setString(2, ppp);
+			ps.setInt(3, rating);
+			ps.setObject(4, timestamp);
+			ps.executeUpdate();
+			return new User(ssn, ppp, rating, timestamp.toString());
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;

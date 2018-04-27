@@ -2,7 +2,9 @@ package qtdating.servlet;
 
 import java.io.IOException;
 import java.sql.Connection;
-
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpSession;
 
 import qtdating.beans.Account;
 import qtdating.beans.Person;
+import qtdating.beans.User;
 import qtdating.utils.DBUtils;
 import qtdating.utils.MyUtils;
 
@@ -114,15 +117,17 @@ public class CreateAcctServlet extends HttpServlet {
 		// Only digits for now, will discuss what is valid
 		m = Pattern.compile("[0-9]+").matcher(Telephone); 
 		if (m.matches() == false) { }  // handle error
-		int cardNumber = Integer.parseInt(request.getParameter("Cardnumber"));
+		String cardNumber = request.getParameter("Cardnumber");
 		
 		Person person = null;
 		boolean hasError = false;
 		Connection conn = MyUtils.getStoredConnection(request);
 		person = DBUtils.insertPerson(conn,SSN,PassWord,FirstName,LastName,Street,City,State,ZipCode,Email,Telephone);
-		java.util.Date date = new java.util.Date();
-		String creationDate = date.toString();
-		Account act = DBUtils.createAccount(conn, SSN, cardNumber, creationDate);
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
+        LocalDateTime now = LocalDateTime.now();    
+        Timestamp timestamp = Timestamp.valueOf(now);
+        User user = DBUtils.createUser(conn, SSN, "User-User", 0, timestamp);
+		Account act = DBUtils.createAccount(conn, SSN, cardNumber, timestamp);
 		
 		if (person == null) {
 		    hasError = true;

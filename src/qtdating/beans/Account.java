@@ -3,7 +3,7 @@ package qtdating.beans;
 public class Account {
 	
 	private String ownerSSN;
-	private int cardNumber;
+	private String cardNumber;
 	private String accountNum;
 	private String accountCreationDate;
 	
@@ -11,7 +11,7 @@ public class Account {
 		
 	}
 
-	public Account(String ownerSSN, int cardNumber, String accountNum, String accountCreationDate) {
+	public Account(String ownerSSN, String cardNumber, String accountNum, String accountCreationDate) {
 		this.ownerSSN = ownerSSN;
 		this.cardNumber = cardNumber;
 		this.accountNum = accountNum;
@@ -26,11 +26,11 @@ public class Account {
 		this.ownerSSN = ownerSSN;
 	}
 
-	public int getCardNumber() {
+	public String getCardNumber() {
 		return cardNumber;
 	}
 
-	public void setCardNumber(int cardNumber) {
+	public void setCardNumber(String cardNumber) {
 		this.cardNumber = cardNumber;
 	}
 
@@ -45,7 +45,7 @@ public class Account {
 	public String getAccountCreationDate(){
 		return accountCreationDate;
 	}
-	
+
 	public void setAccountCreationDate(String accountCreationDate){
 		this.accountCreationDate = accountCreationDate;
 	}

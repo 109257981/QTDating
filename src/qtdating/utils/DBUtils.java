@@ -569,5 +569,115 @@ public static boolean deleteUser(Connection conn, String ssn){
 	return false;
 }
 
+	public static ArrayList<Profile> getActiveProfiles(Connection conn){
+		String sql = "SELECT * FROM Profile ORDER BY LastModDate DESC";
+		ArrayList<Profile> profiles = new ArrayList<>();
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				String profileID = rs.getString("ProfileID");
+				String ssn = rs.getString("OwnerSSN");
+				int age = rs.getInt("Age");
+				int datingAgeRangeStart = rs.getInt("DatingAgeRangeStart");
+				int datingAgeRangeEnd = rs.getInt("DatingAgeRangeEnd");
+				int datingGeoRange = rs.getInt("DatinGeoRange");
+				String m_F = rs.getString("M_F");
+				String hobbies = rs.getString("Hobbies");
+				int height = rs.getInt("Height");
+				int weight = rs.getInt("Weight");
+				String hairColor = rs.getString("HairColor");
+				String creationDate = rs.getString("CreationDate");
+				String lastModDate = rs.getString("LastModDate");
+				profiles.add(new Profile(profileID, ssn, age, datingAgeRangeStart, datingAgeRangeEnd,
+						datingGeoRange, m_F, hobbies, height, weight, hairColor, creationDate, lastModDate));
+			}
+			return profiles;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static ArrayList<Profile> getHighlyRatedProfiles(Connection conn){
+		String sql = "SELECT * FROM Profile P, (SELECT U.SSN FROM User U ORDER BY U.Rating DESC) AS OrderedSSN WHERE P.OwnerSSN = OrderedSSN.SSN";
+		ArrayList<Profile> profiles = new ArrayList<>();
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				String profileID = rs.getString("ProfileID");
+				String ssn = rs.getString("OwnerSSN");
+				int age = rs.getInt("Age");
+				int datingAgeRangeStart = rs.getInt("DatingAgeRangeStart");
+				int datingAgeRangeEnd = rs.getInt("DatingAgeRangeEnd");
+				int datingGeoRange = rs.getInt("DatinGeoRange");
+				String m_F = rs.getString("M_F");
+				String hobbies = rs.getString("Hobbies");
+				int height = rs.getInt("Height");
+				int weight = rs.getInt("Weight");
+				String hairColor = rs.getString("HairColor");
+				String creationDate = rs.getString("CreationDate");
+				String lastModDate = rs.getString("LastModDate");
+				profiles.add(new Profile(profileID, ssn, age, datingAgeRangeStart, datingAgeRangeEnd,
+						datingGeoRange, m_F, hobbies, height, weight, hairColor, creationDate, lastModDate));
+			}
+			return profiles;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static ArrayList<String> getPopularGeoDateLocations(Connection conn){
+		String sql = "SELECT D.Location FROM Date D GROUP BY D.Location ORDER BY COUNT(*) DESC LIMIT 5";
+		ArrayList<String> locations = new ArrayList<>();
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				String loc = rs.getString("Location");
+				locations.add(loc);
+			}
+			return locations;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static ArrayList<Profile> getPersonalizedDateSuggestions(Connection conn, int Age){
+		int below = Age - 5;
+		int above = Age + 5;
+		String sql = "SELECT * FROM Profile P WHERE P.Age >= " + below + " AND P.Age <= " + above;
+		ArrayList<Profile> profiles = new ArrayList<>();
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				String profileID = rs.getString("ProfileID");
+				String ssn = rs.getString("OwnerSSN");
+				int age = rs.getInt("Age");
+				int datingAgeRangeStart = rs.getInt("DatingAgeRangeStart");
+				int datingAgeRangeEnd = rs.getInt("DatingAgeRangeEnd");
+				int datingGeoRange = rs.getInt("DatinGeoRange");
+				String m_F = rs.getString("M_F");
+				String hobbies = rs.getString("Hobbies");
+				int height = rs.getInt("Height");
+				int weight = rs.getInt("Weight");
+				String hairColor = rs.getString("HairColor");
+				String creationDate = rs.getString("CreationDate");
+				String lastModDate = rs.getString("LastModDate");
+				profiles.add(new Profile(profileID, ssn, age, datingAgeRangeStart, datingAgeRangeEnd,
+						datingGeoRange, m_F, hobbies, height, weight, hairColor, creationDate, lastModDate));
+			}
+			return profiles;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+
 }
 

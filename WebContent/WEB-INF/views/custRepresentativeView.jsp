@@ -18,13 +18,13 @@
 <nav>
   <ul>
     <li><a href="#">Record a date</a></li>
-    <li><a href="#">Update customer information</a></li>
-    <li><a href="#">Customer mailing lists</a></li>
+    <li><a href="${pageContext.request.contextPath}/UpdateCusInfoServlet">Update customer information</a></li>
+    <li><a href="${pageContext.request.contextPath}/CusMailingListServlet">Customer mailing lists</a></li>
     <li><a href="#">Date suggestions for a profile</a></li>
   </ul>
 </nav>
 		<h1>Home</h1>
-		<h3>Hello User <b>${person.email}</b></h3>
+		<h3>Hello Customer Representative <b>${person.email}</b></h3>
 		<h3>Your Profiles</h3>
 		
 		<footer>

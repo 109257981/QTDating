@@ -475,4 +475,99 @@ public class DBUtils {
 		return null;
 	}
 	
+	public static ArrayList<Person> getAllUsers(Connection conn){
+		String sql = "SELECT * FROM Person P WHERE P.SSN IN (SELECT U.SSN FROM User1 U)";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			ArrayList<Person> users = new ArrayList<>();
+			while(rs.next()) {
+				String ssn = rs.getString("SSN");
+				String password = rs.getString("Password");
+				String fname = rs.getString("FirstName");
+				String lname = rs.getString("LastName");
+				String street = rs.getString("Street");
+				String city = rs.getString("City");
+				String state = rs.getString("State");
+				int zip = rs.getInt("ZipCode");
+				String t_email = rs.getString("Email");
+				String telephone = rs.getString("Telephone");
+				users.add(new Person(ssn, password, fname, lname, street, city, state, zip, t_email, telephone));
+			}
+			return users;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static boolean editUserInfo(Connection conn, String ssn, String change, String changeTo){
+		//user table
+		if(change.equals("PPP"))
+		{
+			String sql = "UPDATE User1 SET ?=? WHERE SSN=?";
+			try{
+				PreparedStatement ps = conn.prepareStatement(sql);
+				ps.setString(1, change);
+				ps.setString(2, "'"+changeTo+"'");
+				ps.setString(3, "'"+ssn+"'");
+				int rowsUpdated = ps.executeUpdate();
+				if (rowsUpdated > 0) {
+				    return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			String sql = "UPDATE Person SET ?=? WHERE SSN=?";
+			try{
+				PreparedStatement ps = conn.prepareStatement(sql);
+				ps.setString(1, change);
+				ps.setString(2, "'"+changeTo+"'");
+				ps.setString(3, "'"+ssn+"'");
+				int rowsUpdated = ps.executeUpdate();
+				if (rowsUpdated > 0) {
+				    return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
+public static boolean deleteUser(Connection conn, String ssn){
+		String sql = "DELETE FROM `Person` WHERE SSN=?";
+
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, ssn);
+			int rowsdeleted = ps.executeUpdate();
+			
+			if (rowsdeleted> 0) {
+			    return true;
+			}
+			else{
+				return false;
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+	return false;
 }
+
+}
+

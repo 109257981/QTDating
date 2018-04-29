@@ -31,7 +31,7 @@
   </ul>
 </nav>
 		<h1>Home</h1>
-		<h3>Hello User <b>${person.email}</b></h3>
+		<h3>Hello Manager <b>${person.email}</b></h3>
 		<h3>Your Profiles</h3>
 		
 		<footer>

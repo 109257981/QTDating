@@ -505,12 +505,11 @@ public class DBUtils {
 		//user table
 		if(change.equals("PPP"))
 		{
-			String sql = "UPDATE User1 SET ?=? WHERE SSN=?";
+			String sql = "UPDATE User U SET U."+change+"=? WHERE U.SSN=?";
 			try{
 				PreparedStatement ps = conn.prepareStatement(sql);
-				ps.setString(1, change);
-				ps.setString(2, "'"+changeTo+"'");
-				ps.setString(3, "'"+ssn+"'");
+				ps.setString(1, changeTo);
+				ps.setString(2, ssn);
 				int rowsUpdated = ps.executeUpdate();
 				if (rowsUpdated > 0) {
 				    return true;
@@ -526,12 +525,11 @@ public class DBUtils {
 		}
 		else
 		{
-			String sql = "UPDATE Person SET ?=? WHERE SSN=?";
+			String sql = "UPDATE Person P SET P."+change+"=? WHERE P.SSN=?";
 			try{
 				PreparedStatement ps = conn.prepareStatement(sql);
-				ps.setString(1, change);
-				ps.setString(2, "'"+changeTo+"'");
-				ps.setString(3, "'"+ssn+"'");
+				ps.setString(1, changeTo);
+				ps.setString(2, ssn);
 				int rowsUpdated = ps.executeUpdate();
 				if (rowsUpdated > 0) {
 				    return true;

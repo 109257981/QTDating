@@ -23,12 +23,12 @@
 
 <nav>
   <ul>
-    <li><a href="#">Record a date</a></li>
+    <li><a href="${pageContext.request.contextPath}/RecordDateServlet">Record a date</a></li>
     <li><a href="${pageContext.request.contextPath}/UpdateCusInfoServlet">Update customer information</a></li>
     <li><a href="${pageContext.request.contextPath}/CusMailingListServlet">Customer mailing lists</a></li>
-    <li><a href="#">Date suggestions for a profile</a></li>
+    <li><a href="${pageContext.request.contextPath}/DateSuggServlet">Date suggestions for a profile</a></li>
   </ul>
-</nav>		
+</nav>	
 		<h3>Customer Mailing list</h3>
 		<table border="1" cellpadding="5" cellspacing="1" >
        <tr>

@@ -676,6 +676,206 @@ public static boolean deleteUser(Connection conn, String ssn){
 		return null;
 	}
 	
+	public static boolean editEmployeeInfo(Connection conn, String ssn, String role, int rate){
+		if(rate == -1)
+		{
+			String sql = "UPDATE Employee E SET E.role=? WHERE E.SSN=?";
+			try{
+				PreparedStatement ps = conn.prepareStatement(sql);
+				ps.setString(1, role);
+				ps.setString(2, ssn);
+				int rowsUpdated = ps.executeUpdate();
+				if (rowsUpdated > 0) {
+				    return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			String sql = "UPDATE Employee E SET E.HourlyRate=? WHERE E.SSN=?";
+			try{
+				PreparedStatement ps = conn.prepareStatement(sql);
+				ps.setInt(1, rate);
+				ps.setString(2, ssn);
+				int rowsUpdated = ps.executeUpdate();
+				if (rowsUpdated > 0) {
+				    return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	
+	public ArrayList<Date> getSalesReport(Connection conn, Timestamp from, Timestamp to){
+		String sql = "SELECT D.BookingFee, D.Date_Time FROM Date D WHERE D.Date_Time > ? AND D.Date_Time < ?";
+		ArrayList<Date> fees = new ArrayList<>();
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setObject(1, from);
+			ps.setObject(2, to);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				String d_t = rs.getString("Date_Time");
+				int fee = rs.getInt("BookingFee");
+				fees.add(new Date("", "", "", d_t, "", fee, "", -1, -1, false));
+			}
+			return fees;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public ArrayList<User> userList(Connection conn){
+		String sql = "SELECT * FROM User1";
+		ArrayList<User> users = new ArrayList<>();
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				String ssn = rs.getString("SSN");
+				String ppp = rs.getString("PPP");
+				int rating = rs.getInt("Rating");
+				String date = rs.getString("DateOfLastAct");
+				users.add(new User(ssn, ppp, rating, date));
+			}
+			return users;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public ArrayList<Date> getDatesByDate(Connection conn, String d_t){
+		String sql = "SELECT * FROM Date D WHERE D.Date_Time = ?";
+		ArrayList<Date>dates = new ArrayList<>();
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, d_t);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				String p1 = rs.getString("Profile1");
+				String p2 = rs.getString("Profile2");
+				String custRep = rs.getString("CustRep");
+				String dateTime = rs.getString("Date_Time");
+				String loc = rs.getString("Location");
+				int bookingFee = rs.getInt("BookingFee");
+				String comments = rs.getString("Comments");
+				int user1Rating = rs.getInt("User1Rating");
+				int user2Rating = rs.getInt("User2Rating");
+				boolean geoDate = rs.getBoolean("GeoDate");
+				dates.add(new Date(p1, p2, custRep, dateTime, loc, bookingFee, comments, user1Rating, user2Rating, geoDate));
+			}return dates;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
+	public ArrayList<Date> getDatesByName(Connection conn, String first, String last){
+		String sql = "SELECT D.* FROM Date D, Person P, Profile I WHERE (D.Profile1 = I.ProfileID OR D.Profile2 = I.ProfileID) AND I.OwnerSSN = P.SSN AND P.FirstName = ? AND P.LastName = ?";
+		ArrayList<Date>dates = new ArrayList<>();
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, first);
+			ps.setString(2, last);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				String p1 = rs.getString("Profile1");
+				String p2 = rs.getString("Profile2");
+				String custRep = rs.getString("CustRep");
+				String dateTime = rs.getString("Date_Time");
+				String loc = rs.getString("Location");
+				int bookingFee = rs.getInt("BookingFee");
+				String comments = rs.getString("Comments");
+				int user1Rating = rs.getInt("User1Rating");
+				int user2Rating = rs.getInt("User2Rating");
+				boolean geoDate = rs.getBoolean("GeoDate");
+				dates.add(new Date(p1, p2, custRep, dateTime, loc, bookingFee, comments, user1Rating, user2Rating, geoDate));
+			}return dates;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
+	public ArrayList<Integer> revenueByDate(Connection conn, String d_t){
+		String sql = "SELECT D.BookingFee FROM Date D WHERE D.Date_Time = ?";
+		ArrayList<Integer> revenue = new ArrayList<>();
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, d_t);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				int fee = rs.getInt("BookingFee");
+				revenue.add(fee);
+			}
+			return revenue;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public ArrayList<Integer> revenueByName(Connection conn, String first, String last){
+		String sql = "SELECT D.BookingFee FROM Date D, Person P, Profile I WHERE (D.Profile1 = I.ProfileID OR D.Profile2 = I.ProfileID) AND I.OwnerSSN = P.SSN AND P.FirstName = ? AND P.LastName = ?";
+		ArrayList<Integer> revenue = new ArrayList<>();
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, first);
+			ps.setString(2, last);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				int fee = rs.getInt("BookingFee");
+				revenue.add(fee);
+			}
+			return revenue;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public Person getHighestRevenueRep(Connection conn){
+		String sql = "SELECT P.* FROM Person P WHERE P.SSN in (SELECT K.CustRep FROM (SELECT T.CustRep, MAX(T.sum) FROM (SELECT J.CustRep, SUM(J.BookingFee) as sum FROM (SELECT D.CustRep, D.BookingFee FROM Date D)J GROUP BY J.CustRep)T )K)";
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()){
+				String ssn = rs.getString("SSN");
+				String t_password = rs.getString("Password");
+				String fname = rs.getString("FirstName");
+				String lname = rs.getString("LastName");
+				String street = rs.getString("Street");
+				String city = rs.getString("City");
+				String state = rs.getString("State");
+				int zip = rs.getInt("ZipCode");
+				String t_email = rs.getString("Email");
+				String telephone = rs.getString("Telephone");
+				return new Person(ssn, t_password, fname, lname, street, city, state, zip, t_email, telephone);
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public static Date insertDate(Connection conn,String profile1, String profile2, String custRep, Timestamp date_time, String location, int bookingFee,
 			String comments, int user1Rating, int user2Rating, boolean geoDate)
 	{

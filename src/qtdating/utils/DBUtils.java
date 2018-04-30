@@ -733,6 +733,94 @@ public static boolean deleteUser(Connection conn, String ssn){
 		return null;
 	}
 	
+	public static Person getCusGeneratedMostTotalRevenue(Connection conn) {
+		String sql = "SELECT P.* FROM Person P WHERE P.SSN in ( SELECT K.OwnerSSN FROM Profile K WHERE K.ProfileID in ( SELECT K.Profile1 FROM ( SELECT M. Profile1, MAX(M.SUM) FROM ( SELECT K.Profile1, MAX(K.sum) as sum FROM ( SELECT J.Profile1, SUM(J.BookingFee) as sum   FROM ( SELECT D.Profile1, D.BookingFee FROM Date D UNION SELECT D.Profile2, D.BookingFee FROM Date D ) J GROUP BY J.Profile1 ) K GROUP BY K.Profile1 ORDER BY K.sum DESC) M )K ) ) ";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				String ssn = rs.getString("SSN");
+				String password = rs.getString("Password");
+				String fname = rs.getString("FirstName");
+				String lname = rs.getString("LastName");
+				String street = rs.getString("Street");
+				String city = rs.getString("City");
+				String state = rs.getString("State");
+				int zip = rs.getInt("ZipCode");
+				String t_email = rs.getString("Email");
+				String telephone = rs.getString("Telephone");
+				return new Person(ssn, password, fname, lname, street, city, state, zip, t_email, telephone);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
+	public static ArrayList<Person> getCusWhoHaveDated(Connection conn) {
+		String sql = "SELECT DISTINCT P.* FROM Person P, User1 U, Profile Pf, Date D WHERE (D.Profile1=Pf.ProfileID OR D.Profile2=Pf.ProfileID) AND Pf.OwnerSSN=P.SSN";
+		ArrayList<Person> cus = new ArrayList<>();
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				String ssn = rs.getString("SSN");
+				String password = rs.getString("Password");
+				String fname = rs.getString("FirstName");
+				String lname = rs.getString("LastName");
+				String street = rs.getString("Street");
+				String city = rs.getString("City");
+				String state = rs.getString("State");
+				int zip = rs.getInt("ZipCode");
+				String t_email = rs.getString("Email");
+				String telephone = rs.getString("Telephone");
+				cus.add(new Person(ssn, password, fname, lname, street, city, state, zip, t_email, telephone));
+			}
+			return cus;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	//get the top n highest rated customers
+	public static ArrayList<User> getHighestRatedCus(Connection conn,int n) {
+		String sql = "SELECT U.* FROM User1 U ORDER BY U.Rating DESC LIMIT "+n;
+		ArrayList<User> cus = new ArrayList<>();
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				String ssn = rs.getString("SSN");
+				String ppp = rs.getString("PPP");
+				int rating = rs.getInt("Rating");
+				String date = rs.getString("DateOfLastAct");
+				cus.add(new User(ssn, ppp,rating,date));
+			}
+			return cus;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	//Produce a list of the highest-rated calendar dates to have a date on
+	public static ArrayList<String> getHighestRatedCalendarDate(Connection conn,int n) {
+		
+		String sql = "SELECT CAST(D.Date_Time as Date) AS \"Highest-rated calendar dates\" FROM Date D GROUP BY CAST(D.Date_Time as Date) ORDER BY COUNT(*) DESC LIMIT "+n;
+		ArrayList<String> dates = new ArrayList<>();
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				String date = rs.getString("Highest-rated calendar dates");
+				dates.add(date);
+			}
+			return dates;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
 

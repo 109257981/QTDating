@@ -1,5 +1,5 @@
 body {
-    background: #f959f9;
+    background-color: #d7dde5;
 }
 
 h1 {
@@ -29,4 +29,12 @@ button {
 p {
 	text-align: center;
 	font-size: 20px;
+}
+
+img {
+	position: fixed;
+  	top: 50%;
+  	left: 50%;
+  	margin-top: -50px;
+  	margin-left: -100px;
 }

@@ -126,7 +126,8 @@ public class CreateAcctServlet extends HttpServlet {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");  
         LocalDateTime now = LocalDateTime.now();    
         Timestamp timestamp = Timestamp.valueOf(now);
-        User user = DBUtils.createUser(conn, SSN, "User-User", 0, timestamp);
+        String ppp = request.getParameter("PPP");
+        User user = DBUtils.createUser(conn, SSN, ppp, 0, timestamp);
 		Account act = DBUtils.createAccount(conn, SSN, cardNumber, timestamp);
 		
 		if (person == null) {

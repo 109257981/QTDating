@@ -33,6 +33,10 @@
 				<input type="text" name="Telephone" class="form-control" placeholder="ex. 1234567890">
 				<p id="CarnumberP">Credit Card Number</p>
 				<input type="text" name="Cardnumber" class="form-control" placeholder="ex. 1234567890">
+				<p id="PPPP">Profile Placement Priority</p>
+				<input type="radio" name="PPP" value="User-User" checked>User-User<br>
+  				<input type="radio" name="PPP" value="Good-User">Good-User<br>
+  				<input type="radio" name="PPP" value="Super-User">Super-User<br>
 				<button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit">
 					Create Account
 				</button>

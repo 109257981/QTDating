@@ -35,15 +35,6 @@
 		<table border="1" cellpadding="5" cellspacing="1" >
        <tr>
           <th>ProfileID</th>
-          <th>Age</th>
-          <th>DatingAgeRangeStart</th>
-          <th>DatingAgeRangeEnd</th>
-          <th>DatinGeoRange</th>
-          <th>M_F</th>
-          <th>Hobbies</th>
-          <th>Height</th>
-          <th>Weight</th>
-          <th>HairColor</th>
           <th>CreationDate</th>
           <th>LastModDate</th>
           <th></th>
@@ -51,15 +42,6 @@
        <c:forEach items="${profileList}" var="profile" >
           <tr>
              <td>${profile.profileId}</td>
-             <td>${profile.age}</td>
-             <td>${profile.datingAgeRangeStart}</td>
-             <td>${profile.datingAgeRangeEnd}</td>
-             <td>${profile.datingGeoRange}</td>
-             <td>${profile.m_f}</td>
-             <td>${profile.hobbies}</td>
-             <td>${profile.height}</td>
-             <td>${profile.weight}</td>
-             <td>${profile.hairColor}</td>
              <td>${profile.creationDate}</td>
              <td>${profile.lastModDate}</td>
              

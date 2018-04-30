@@ -13,6 +13,15 @@
 			<button class="button">Your Information</button>
 			<img src="Resources/Images/qtlogoSmall.png" width=60 height=60 alt="QT Dating">
 	</header>
+	
+	<nav>
+  <ul>
+    <li><a href="${pageContext.request.contextPath}/RecordDateServlet">Record a date</a></li>
+    <li><a href="${pageContext.request.contextPath}/UpdateCusInfoServlet">Update customer information</a></li>
+    <li><a href="${pageContext.request.contextPath}/CusMailingListServlet">Customer mailing lists</a></li>
+    <li><a href="${pageContext.request.contextPath}/DateSuggServlet">Date suggestions for a profile</a></li>
+  </ul>
+</nav>
 		
 			<form method="POST" action="${pageContext.request.contextPath}/EditCusServlet" class="form-signin">
 				<h1 class="form-signin-heading text-muted">Edit Information of a Customer</h1>

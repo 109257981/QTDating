@@ -676,6 +676,63 @@ public static boolean deleteUser(Connection conn, String ssn){
 		return null;
 	}
 	
+	public static Date insertDate(Connection conn,String profile1, String profile2, String custRep, Timestamp date_time, String location, int bookingFee,
+			String comments, int user1Rating, int user2Rating, boolean geoDate)
+	{
+			String sql = "INSERT INTO Date(Profile1, Profile2, CustRep, Date_Time, Location, BookingFee, Comments, User1Rating, User2Rating,GeoDate)"
+			+ "VALUES(?,?,?,?,?,?,?,?,?,?)";
+			try {
+				PreparedStatement ps = conn.prepareStatement(sql);
+				ps.setString(1, profile1);
+				ps.setString(2, profile2);
+				ps.setString(3, custRep);
+				ps.setObject(4, date_time);
+				ps.setString(5, location);
+				ps.setInt(6, bookingFee);
+				ps.setString(7, comments);
+				ps.setInt(8, user1Rating);
+				ps.setInt(9, user2Rating);
+				ps.setBoolean(10, geoDate);
+				ps.executeUpdate();
+				return new Date(profile1, profile2,custRep, date_time.toString(),location, bookingFee,comments,user1Rating, user2Rating, geoDate);
+			} catch (SQLException e) {
+			e.printStackTrace();
+			}
+			return null;
+	}
+	
+	public static ArrayList<Profile> getProfileSugg(Connection conn, String pID){
+		String sql = "SELECT * FROM Profile P WHERE P.ProfileID IN (SELECT D. Profile1 FROM Date D WHERE D.Profile2=?) UNION SELECT * FROM Profile P WHERE P.ProfileID IN (SELECT D. Profile2 FROM Date D WHERE D.Profile1=?)";
+		ArrayList<Profile> profiles = new ArrayList<>();
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, pID);
+			ps.setString(2, pID);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				String profileID = rs.getString("ProfileID");
+				String ssn = rs.getString("OwnerSSN");
+				int age = rs.getInt("Age");
+				int datingAgeRangeStart = rs.getInt("DatingAgeRangeStart");
+				int datingAgeRangeEnd = rs.getInt("DatingAgeRangeEnd");
+				int datingGeoRange = rs.getInt("DatinGeoRange");
+				String m_F = rs.getString("M_F");
+				String hobbies = rs.getString("Hobbies");
+				int height = rs.getInt("Height");
+				int weight = rs.getInt("Weight");
+				String hairColor = rs.getString("HairColor");
+				String creationDate = rs.getString("CreationDate");
+				String lastModDate = rs.getString("LastModDate");
+				profiles.add(new Profile(profileID, ssn, age, datingAgeRangeStart, datingAgeRangeEnd,
+						datingGeoRange, m_F, hobbies, height, weight, hairColor, creationDate, lastModDate));
+			}
+			return profiles;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 
 }
 

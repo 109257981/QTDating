@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/Resources/Styles/index_style.css"> 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>QTDating</title>
- 
+  
  
 </head>
 <body>

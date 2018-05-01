@@ -365,7 +365,7 @@ return false;
 	}
 	
 	public static ArrayList<Date> getPastDates(Connection conn, String pID, String d_t){
-		String sql = "SELECT * FROM Date WHERE Profile1 = ? OR Profile2 = ? AND Date_Time < ?";
+		String sql = "SELECT * FROM Date WHERE (Profile1 = ? OR Profile2 = ?) AND Date_Time < ?";
 		ArrayList<Date> pastDates = new ArrayList<>();
 		try{
 			PreparedStatement ps = conn.prepareStatement(sql);

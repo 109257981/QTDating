@@ -66,6 +66,35 @@ public class DBUtils {
 		return null;
 	}
 	
+	
+	
+public static boolean makeDate(Connection conn, String prof1, String prof2,
+			   String location, Boolean geoDate, String d_t)
+{
+String sql = "INSERT INTO Date(Profile1, Profile2, CustRep,"
++ " Date_Time, Location, BookingFee, Comments,"
++ " User1Rating, User2Rating, GeoDate) VALUES(?,?,?,?,?,?,?,?,?,?)";
+try{
+PreparedStatement ps = conn.prepareStatement(sql);
+ps.setString(1, prof1);
+ps.setString(2, prof2);
+ps.setString(3, "333-33-3333");
+ps.setString(4, d_t);
+ps.setString(5, location);
+ps.setInt(6, 33);
+ps.setString(7, "OO");
+ps.setInt(8, 2);
+ps.setInt(9, 3);
+ps.setBoolean(10, geoDate);
+ps.executeUpdate();
+return true;
+}catch (SQLException e) {
+e.printStackTrace();
+}
+return false;
+}
+
+	
 	public static Person getPerson(Connection conn, String email, String password) {
 		String sql = "SELECT * FROM Person WHERE Email = ? AND Password = ?";
 		try {
@@ -228,7 +257,7 @@ public class DBUtils {
 	}
 	
 	public static ArrayList<Date> getPendingDates(Connection conn, String pID, String d_t){
-		String sql = "SELECT * FROM Date WHERE Profile1 = ? OR Profile2 = ? AND Date_Time >= ?";
+		String sql = "SELECT * FROM Date WHERE (Profile1 = ? OR Profile2 = ?) AND Date_Time >= ?";
 		ArrayList<Date> pendingDates = new ArrayList<>();
 		try{
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -320,7 +349,7 @@ public class DBUtils {
 	}
 	
 	public static BlindDate referProfile(Connection conn, String profileA, String profileB, String profileC, String d_t){
-		String sql = "INSER INTO BlindDate(ProfileA, ProfileB, ProfileC, Date_Time) VALUES(?,?,?,?)";
+		String sql = "INSERT INTO BlindDate(ProfileA, ProfileB, ProfileC, Date_Time) VALUES(?,?,?,?)";
 		try{
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, profileA);

@@ -57,8 +57,11 @@ public class RecordDateServlet extends HttpServlet {
 		
 		String p1=request.getParameter("p1");		
 		String p2=request.getParameter("p2");
-		String date=request.getParameter("date");//
-		Timestamp dt=Timestamp.valueOf(date);
+		
+		String date=request.getParameter("date");
+		String time=request.getParameter("time");
+		
+		Timestamp dt=Timestamp.valueOf((date+" "+time+":00"));
 		String location=request.getParameter("location");
 		int bkfee=Integer.parseInt(request.getParameter("bkfee"));
 		String cm=request.getParameter("cm");
@@ -89,5 +92,4 @@ public class RecordDateServlet extends HttpServlet {
 	        dispatcher.forward(request, response);
 		}
 	}
-
 }

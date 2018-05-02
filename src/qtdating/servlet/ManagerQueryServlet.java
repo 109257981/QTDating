@@ -63,8 +63,8 @@ public class ManagerQueryServlet extends HttpServlet {
         	
         }
         else if  (s.equals("All Dates"))  {
-        	ArrayList<qtdating.beans.Person> dates; = DBUtils.getDa(conn);
-        	request.setAttribute("dates", dates);
+        	//ArrayList<qtdating.beans.Person> dates; = DBUtils.getDate(conn);
+        	//request.setAttribute("dates", dates);
             RequestDispatcher dispatcher = this.getServletContext()
             		.getRequestDispatcher("/WEB-INF/views/managerQueries/allDates.jsp");
             dispatcher.forward(request, response);
@@ -87,16 +87,16 @@ public class ManagerQueryServlet extends HttpServlet {
         else if  (s.equals("People who dated a customer"))  {
         	
         }
-        	
-        }	
         else if  (s.equals("Highest-Rated Calendar Dates"))  {
         	
         }	
+        else
+        {
+        }
         
         RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/managerView.jsp");
         dispatcher.forward(request, response);
-        
-
+       
 	}
 
 	/**

@@ -28,7 +28,10 @@
 				
 				<input type="text" name="p1" class="form-control" placeholder="Profile 1">
 				<input type="text" name="p2" class="form-control" placeholder="Profile 2">
-				<input type="datetime" name="date" class="form-control" placeholder="yyyy-MM-dd HH:mm:ss">
+				
+				<input name="date" type="date"> 
+			    <input name="time" type="time">
+				
 				<input type="text" name="location" class="form-control" placeholder="Location">
 				<input type="number" name="bkfee" class="form-control" placeholder="Booking Fee">
 				<input type="text" name="cm" class="form-control" placeholder="Comments">

@@ -53,7 +53,6 @@
           <th>HairColor</th>
           <th>CreationDate</th>
           <th>LastModDate</th>
-          <th></th>
        </tr>
        <c:forEach items="${profileList}" var="profile" >
           <tr>

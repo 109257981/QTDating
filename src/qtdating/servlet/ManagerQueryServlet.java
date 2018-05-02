@@ -42,8 +42,6 @@ public class ManagerQueryServlet extends HttpServlet {
 		
 		//Store profile to session
 		HttpSession session = request.getSession();
-		//MyUtils.storeProfile(session,p);
-		
         
         String s = request.getParameter("choice");
         
@@ -80,15 +78,14 @@ public class ManagerQueryServlet extends HttpServlet {
         	
         }	
         else if  (s.equals("Most Active Customers"))  {
-        	Arraylist customers = DBUtils.get
         	
         }	
         else if  (s.equals("Hightly Rated Customers"))  {
-        	DBUtils.
-        	
-        
+        	ArrayList<qtdating.beans.User> users = DBUtils.getHighestRatedCus(conn, 5);
+   	
+        }
         else if  (s.equals("People who dated a customer"))  {
-        	ArrayList dates = DBUtils.getCusGeneratedMostTotalRevenue(conn);
+        	
         }
         	
         }	

@@ -21,25 +21,22 @@
 	    <table border="1">
 	    <tr>
           <th>Partner's id</th>
-          <th>Customer Representative</th>
-          <th>Date and Time</th>
-          <th>Location</th>
-          <th>Booking Fee</th>
-          <th>Cancel Date</th>
+          <th>Gender</th>
+          <th>Age</th>
+          <th>Height</th>
+          <th>Weight</th>
        </tr>
-       <c:forEach items="${pendingDates}" var="date" >
+       <c:forEach items="${profileList}" var="profile" >
           <tr>
-             <td>${date.profile2}</td>
-             <td>${date.custRep}</td>
-             <td>${date.date_time}</td>
-             <td>${date.location}</td>
-             <td>${date.bookingFee}</td>
+             <td>${profile.profileId}</td>
+             <td>${profile.m_f}</td>
+             <td>${profile.age}</td>
+             <td>${profile.height}</td>
+             <td>${profile.weight}</td>
              <td>
              <form>
-             <button name="choice" type="submit" value="CancelDateProcessing">Cancel</button>
-             <input type="hidden" name="profile1" value="${date.profile1}">
-             <input type="hidden" name="profile2" value="${date.profile2}">
-             <input type="hidden" name="date" value="${date.date_time}">
+             <button name="choice" type="submit" value="Make a Date">Make a Date</button>
+             <input type="hidden" name="profile2" value="${profile.profileId}">
              </form>
              </td>
              
@@ -52,7 +49,7 @@
 
 		
 	
-	>
+
 	</body>
 </html>
              

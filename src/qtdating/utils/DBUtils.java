@@ -456,6 +456,53 @@ return false;
 		return null;
 	}
 	
+	
+	public static ArrayList<Profile> getProfilesByCriteria(Connection conn, String name,
+			int ageStart, int ageEnd,
+			int weightStart, int weightEnd,
+			int heightStart, int heightEnd
+	){
+
+		String sql = "SELECT * FROM Profile WHERE ((profileId LIKE ?) "
+				+ "AND (age >= ? AND age <= ?) "
+				+ "AND (weight >= ? AND weight <= ?) "
+				+ "AND (height >= ? AND height <= ?)) ";
+	
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, "%"+ name + "%");
+			ps.setInt(2, ageStart);
+			ps.setInt(3, ageEnd);
+			ps.setInt(4, weightStart);
+			ps.setInt(5, weightEnd);
+			ps.setInt(6, heightStart);
+			ps.setInt(7, heightEnd);
+			ResultSet rs = ps.executeQuery();
+			ArrayList<Profile> profiles = new ArrayList<>();
+			while(rs.next()){
+				String profileID = rs.getString("ProfileID");
+				String ssn = rs.getString("OwnerSSN");
+				int age = rs.getInt("Age");
+				int datingAgeRangeStart = rs.getInt("DatingAgeRangeStart");
+				int datingAgeRangeEnd = rs.getInt("DatingAgeRangeEnd");
+				int datingGeoRange = rs.getInt("DatinGeoRange");
+				String m_F = rs.getString("M_F");
+				String hobbies = rs.getString("Hobbies");
+				int height = rs.getInt("Height");
+				int weight = rs.getInt("Weight");
+				String hairColor = rs.getString("HairColor");
+				String creationDate = rs.getString("CreationDate");
+				String lastModDate = rs.getString("LastModDate");
+				profiles.add(new Profile(profileID, ssn, age, datingAgeRangeStart, datingAgeRangeEnd,
+						datingGeoRange, m_F, hobbies, height, weight, hairColor, creationDate, lastModDate));
+			} 			
+			return profiles;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public static ArrayList<Profile> getProfileBySex(Connection conn, String sex){
 		String sql = "SELECT * FROM Profile WHERE M_F = ?";
 		try{

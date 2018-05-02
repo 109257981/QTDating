@@ -44,7 +44,7 @@
              	<form>
              		<button name="choice" type="submit" value="Make a Date">Make a Date</button>
              		<input type="hidden" name="profile2" value="${profile.profileId}">
-s             	</form>  
+             	</form>  
              </td>        
           </tr>
        </c:forEach>

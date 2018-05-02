@@ -151,7 +151,76 @@ public class ProfQueryServlet extends HttpServlet {
 			dispatcher = this.getServletContext()
 					.getRequestDispatcher("/WEB-INF/views/profileQueries/favorites.jsp");
 		} else if (s.equals("Search for profiles")) {
-
+			dispatcher = this.getServletContext()
+					.getRequestDispatcher("/WEB-INF/views/profileQueries/searchProfiles.jsp");
+		}
+	    else if (s.equals("searchProfilesResult"))  {
+	    	try {
+	    		
+	    		String _ageStart = request.getParameter("ageStart");
+	    		String _ageEnd = request.getParameter("ageEnd");
+	    		String _weightStart = request.getParameter("weightStart");
+	    		String _weightEnd = request.getParameter("weightEnd");
+	    		String _heightStart = request.getParameter("heightStart");
+	    		String _heightEnd = request.getParameter("heightEnd");
+	    		
+	    		
+	    		int ageStart;
+	    		int ageEnd; 
+	    		int weightStart; 
+	    		int weightEnd; 
+	    		int heightStart;
+	    		int heightEnd;
+	    		
+	    		if (_ageStart.isEmpty() || _ageStart == null) {
+	    			ageStart = 0;	
+	    		}
+	    		else ageStart = Integer.valueOf(request.getParameter("ageStart"));
+	    		
+	    		if (_ageEnd.isEmpty() || _ageEnd == null ) {
+	    			ageEnd = Integer.MAX_VALUE;	
+	    		}
+	    		else ageEnd = Integer.valueOf(request.getParameter("ageEnd"));
+	    		
+	    		if (_weightStart.isEmpty() || _weightStart == null) {
+	    			weightStart = 0;	
+	    		}
+	    		else weightStart = Integer.valueOf(request.getParameter("weightStart"));
+	    		
+	    		if (_weightEnd.isEmpty() || _weightEnd == null) {
+	    			weightEnd = Integer.MAX_VALUE;	
+	    		}
+	    		else weightEnd = Integer.valueOf(request.getParameter("weightEnd"));
+	    		
+	    		if (_heightStart.isEmpty() || _heightStart == null) {
+	    			heightStart = 0;	
+	    		}
+	    		else heightStart = Integer.valueOf(request.getParameter("heightStart"));
+	    		
+	    		if (_heightEnd.isEmpty() || _heightEnd == null) {
+	    			heightEnd = Integer.MAX_VALUE;	
+	    		}
+	    		else heightEnd = Integer.valueOf(request.getParameter("heightEnd"));
+	    		
+	    		ArrayList<Profile> profileList;
+	    		profileList = DBUtils.getProfilesByCriteria(conn,
+		    			request.getParameter("name"),
+		    			ageStart,
+		    			ageEnd,
+		    			weightStart,
+		    			weightEnd,
+		    			heightStart,
+		    			heightEnd);
+	    		request.setAttribute("profileList", profileList);
+	    
+	    		
+		    	dispatcher = this.getServletContext()
+						.getRequestDispatcher("/WEB-INF/views/profileQueries/searchProfilesResult.jsp");	
+	    	}
+	    	catch (NumberFormatException e) {
+	    		
+	    	}
+		
 		} else if (s.equals("Comment on a Date")) {
 			ArrayList<qtdating.beans.Date> pastDates;
 			pastDates = DBUtils.getPastDates(conn, profileId, getRightNow());
@@ -186,8 +255,12 @@ public class ProfQueryServlet extends HttpServlet {
 			
 
 		} else if (s.equals("Date Suggestion List")) {
+			ArrayList<qtdating.beans.Profile> profileList;
+			Profile p = DBUtils.getSpecificProfile(conn, profileId);
+			profileList = DBUtils.getPersonalizedDateSuggestions(conn, p.getAge());
+			request.setAttribute("profileList", profileList);
 			dispatcher = this.getServletContext()
-					.getRequestDispatcher("/WEB-INF/views/profileQueries/commentDate.jsp");
+					.getRequestDispatcher("/WEB-INF/views/profileQueries/dateSuggestion.jsp");
 
 		} else if (s.equals("Back to profiles")) {
 			

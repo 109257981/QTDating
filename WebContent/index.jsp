@@ -10,10 +10,16 @@
  
 </head>
 <body>
+
+
   <img src="Resources/Images/QT_banner.png" width=500 height=100 alt="QT Dating">
 
    <a href="${pageContext.request.contextPath}/LoginServlet" tabindex="5" class="login">Login</a>
    <a href="${pageContext.request.contextPath}/CreateAcctServlet" tabindex="5" class="login">Create Account</a>
+   
+  
+   
+   
    
 </body>
 </html>

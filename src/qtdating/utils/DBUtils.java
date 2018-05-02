@@ -674,7 +674,7 @@ public static boolean deleteUser(Connection conn, String ssn){
 	}
 	
 	public static ArrayList<Profile> getHighlyRatedProfiles(Connection conn){
-		String sql = "SELECT * FROM Profile P, (SELECT U.SSN FROM User U ORDER BY U.Rating DESC) AS OrderedSSN WHERE P.OwnerSSN = OrderedSSN.SSN";
+		String sql = "SELECT * FROM Profile P, (SELECT U.SSN FROM User1 U ORDER BY U.Rating DESC) AS OrderedSSN WHERE P.OwnerSSN = OrderedSSN.SSN";
 		ArrayList<Profile> profiles = new ArrayList<>();
 		try{
 			PreparedStatement ps = conn.prepareStatement(sql);

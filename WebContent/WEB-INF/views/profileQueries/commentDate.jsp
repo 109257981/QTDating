@@ -44,8 +44,6 @@
              <input type="text" name="comment">
              <input type="submit" name="choice" value="newComment">
              </form> 
-             </td>
-             <td>
              
              </td>
              

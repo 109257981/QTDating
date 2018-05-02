@@ -243,7 +243,7 @@ public class ProfQueryServlet extends HttpServlet {
 			ArrayList<qtdating.beans.Profile> profileList = DBUtils.getHighlyRatedProfiles(conn);
 			request.setAttribute("profileList", profileList);
 			dispatcher = this.getServletContext()
-					.getRequestDispatcher("/WEB-INF/views/profileQueries/mostActive.jsp");
+					.getRequestDispatcher("/WEB-INF/views/profileQueries/topRated.jsp");
 			
 
 		} else if (s.equals("Popular Date Locations")) {

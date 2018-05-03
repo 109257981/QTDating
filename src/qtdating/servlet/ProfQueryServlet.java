@@ -80,13 +80,15 @@ public class ProfQueryServlet extends HttpServlet {
 
 		} 
 		else if (s.equals("submitNewDate")) {
-			System.out.println("SUBMIT DATE");
+			
 			String date_time =  request.getParameter("date") + " " + request.getParameter("time");
 			System.out.println(date_time);
 			System.out.println(profileId);
 			System.out.println(request.getParameter("profile2"));
 			System.out.println(request.getParameter("location"));
-
+			
+			
+			if (!profileId.equals(request.getParameter("profile2")))
 			DBUtils.makeDate(conn,
 					profileId,
 					request.getParameter("profile2"),
@@ -99,6 +101,16 @@ public class ProfQueryServlet extends HttpServlet {
 		}
 		
 		else if (s.equals("New Geo-Date")) {
+			qtdating.beans.Person person;
+			int zipcode = Integer.valueOf(profileId);
+			person = DBUtils.getZip(conn, profileId);
+			zipcode = person.getZipcode();
+			ArrayList<Profile> profiles = DBUtils.geoDate(conn, zipcode);
+			request.setAttribute("profiles", profiles);
+			
+			dispatcher = this.getServletContext()
+					.getRequestDispatcher("/WEB-INF/views/profileQueries/geoDate.jsp");
+
 
 		} else if (s.equals("Cancel a Date")) {
 			ArrayList<qtdating.beans.Date> pendingDates;
@@ -138,11 +150,13 @@ public class ProfQueryServlet extends HttpServlet {
 			);
 		}
 		else if (s.equals("LikeProfile")) {
+			if (!profileId.equals(request.getParameter("profile2"))) {
 			DBUtils.likeProfile(conn,
 					profileId,
 					request.getParameter("profile2"),
 					getRightNow()
 			);
+			}
 		}
 		else if (s.equals("Favorites List")) {
 			ArrayList<qtdating.beans.Profile> profileList;

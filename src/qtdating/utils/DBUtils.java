@@ -66,6 +66,31 @@ public class DBUtils {
 		return null;
 	}
 	
+	public static Person getPersonBySSN(Connection conn, String _ssn) {
+		String sql = "SELECT * FROM Person WHERE ssn = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, _ssn);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				String ssn = rs.getString("SSN");
+				String password = rs.getString("Password");
+				String fname = rs.getString("FirstName");
+				String lname = rs.getString("LastName");
+				String street = rs.getString("Street");
+				String city = rs.getString("City");
+				String state = rs.getString("State");
+				int zip = rs.getInt("ZipCode");
+				String t_email = rs.getString("Email");
+				String telephone = rs.getString("Telephone");
+				return new Person(ssn, password, fname, lname, street, city, state, zip, t_email, telephone);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	
 public static boolean makeDate(Connection conn, String prof1, String prof2,
@@ -644,7 +669,7 @@ public static boolean deleteUser(Connection conn, String ssn){
 }
 
 	public static ArrayList<Profile> getActiveProfiles(Connection conn){
-		String sql = "SELECT * FROM Profile ORDER BY LastModDate DESC";
+		String sql = "SELECT DISTINCT * FROM Profile ORDER BY LastModDate DESC";
 		ArrayList<Profile> profiles = new ArrayList<>();
 		try{
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -752,10 +777,72 @@ public static boolean deleteUser(Connection conn, String ssn){
 		return null;
 	}
 	
-	public static boolean editEmployeeInfo(Connection conn, String ssn, String role, int rate){
-		if(rate == -1)
-		{
-			String sql = "UPDATE Employee E SET E.role=? WHERE E.SSN=?";
+	public static Person getZip(Connection conn, String profile) {
+		String sql = "SELECT p.* FROM Person p, Profile pr WHERE p.SSN = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, profile);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				String ssn = rs.getString("SSN");
+				String password = rs.getString("Password");
+				String fname = rs.getString("FirstName");
+				String lname = rs.getString("LastName");
+				String street = rs.getString("Street");
+				String city = rs.getString("City");
+				String state = rs.getString("State");
+				int zip = rs.getInt("ZipCode");
+				String t_email = rs.getString("Email");
+				String telephone = rs.getString("Telephone");
+				return new Person(ssn, password, fname, lname, street, city, state, zip, t_email, telephone);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static ArrayList<Profile> geoDate(Connection conn, int zip){
+		
+		String sql = "SELECT PR.* FROM Profile PR, Person P WHERE "
+				+ "(P.SSN = PR.OwnerSSN) "
+				+ "AND (P.Zipcode-5000 < ? AND P.Zipcode+5000 > ?)";
+		ArrayList<Profile> profiles = new ArrayList<>();
+		try{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, zip);
+			ps.setInt(2, zip);
+
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				String profileID = rs.getString("ProfileID");
+				String ssn = rs.getString("OwnerSSN");
+				int age = rs.getInt("Age");
+				int datingAgeRangeStart = rs.getInt("DatingAgeRangeStart");
+				int datingAgeRangeEnd = rs.getInt("DatingAgeRangeEnd");
+				int datingGeoRange = rs.getInt("DatinGeoRange");
+				String m_F = rs.getString("M_F");
+				String hobbies = rs.getString("Hobbies");
+				int height = rs.getInt("Height");
+				int weight = rs.getInt("Weight");
+				String hairColor = rs.getString("HairColor");
+				String creationDate = rs.getString("CreationDate");
+				String lastModDate = rs.getString("LastModDate");
+				profiles.add(new Profile(profileID, ssn, age, datingAgeRangeStart, datingAgeRangeEnd,
+						datingGeoRange, m_F, hobbies, height, weight, hairColor, creationDate, lastModDate));
+			}
+			return profiles;
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	
+	public static boolean editEmployeeRole(Connection conn, String ssn, String role){
+	
+			String sql = "UPDATE Employee E SET E.Role=? WHERE E.SSN=?";
 			try{
 				PreparedStatement ps = conn.prepareStatement(sql);
 				ps.setString(1, role);
@@ -772,9 +859,12 @@ public static boolean deleteUser(Connection conn, String ssn){
 			catch (SQLException e) {
 				e.printStackTrace();
 			}
+			
+			return false;
 		}
-		else
-		{
+	
+	public static boolean editEmployeeRate(Connection conn, String ssn, int rate){
+
 			String sql = "UPDATE Employee E SET E.HourlyRate=? WHERE E.SSN=?";
 			try{
 				PreparedStatement ps = conn.prepareStatement(sql);
@@ -792,12 +882,11 @@ public static boolean deleteUser(Connection conn, String ssn){
 			catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
 		return false;
 	}
 	
-	public ArrayList<Date> getSalesReport(Connection conn, Timestamp from, Timestamp to){
-		String sql = "SELECT D.BookingFee, D.Date_Time FROM Date D WHERE D.Date_Time > ? AND D.Date_Time < ?";
+	public static ArrayList<Date> getSalesReport(Connection conn, Timestamp from, Timestamp to){
+		String sql = "SELECT D.* FROM Date D WHERE D.Date_Time > ? AND D.Date_Time < ?";
 		ArrayList<Date> fees = new ArrayList<>();
 		try{
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -806,8 +895,11 @@ public static boolean deleteUser(Connection conn, String ssn){
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()){
 				String d_t = rs.getString("Date_Time");
+				String p1 = rs.getString("Profile1");
+				String p2 = rs.getString("Profile2");
+				String cr = rs.getString("CustRep");
 				int fee = rs.getInt("BookingFee");
-				fees.add(new Date("", "", "", d_t, "", fee, "", -1, -1, false));
+				fees.add(new Date(p1, p2, cr, d_t, "", fee, "", -1, -1, false));
 			}
 			return fees;
 		}catch (SQLException e) {
@@ -816,7 +908,8 @@ public static boolean deleteUser(Connection conn, String ssn){
 		return null;
 	}
 	
-	public ArrayList<User> userList(Connection conn){
+	
+	public static ArrayList<User> userList(Connection conn){
 		String sql = "SELECT * FROM User1";
 		ArrayList<User> users = new ArrayList<>();
 		try{
@@ -836,12 +929,14 @@ public static boolean deleteUser(Connection conn, String ssn){
 		return null;
 	}
 	
-	public ArrayList<Date> getDatesByDate(Connection conn, String d_t){
-		String sql = "SELECT * FROM Date D WHERE D.Date_Time = ?";
+	public static ArrayList<Date> getDatesByDate(Connection conn, String d_t, String d_t2){
+		String sql = "SELECT * FROM Date D WHERE (D.Date_Time >= ? AND D.Date_Time <= ?)";
+		
 		ArrayList<Date>dates = new ArrayList<>();
 		try{
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, d_t);
+			ps.setString(2, d_t2);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()){
 				String p1 = rs.getString("Profile1");
@@ -863,7 +958,7 @@ public static boolean deleteUser(Connection conn, String ssn){
 		
 	}
 	
-	public ArrayList<Date> getDatesByName(Connection conn, String first, String last){
+	public static ArrayList<Date> getDatesByName(Connection conn, String first, String last){
 		String sql = "SELECT D.* FROM Date D, Person P, Profile I WHERE (D.Profile1 = I.ProfileID OR D.Profile2 = I.ProfileID) AND I.OwnerSSN = P.SSN AND P.FirstName = ? AND P.LastName = ?";
 		ArrayList<Date>dates = new ArrayList<>();
 		try{
@@ -891,12 +986,14 @@ public static boolean deleteUser(Connection conn, String ssn){
 		
 	}
 	
-	public ArrayList<Integer> revenueByDate(Connection conn, String d_t){
-		String sql = "SELECT D.BookingFee FROM Date D WHERE D.Date_Time = ?";
+	public static ArrayList<Integer> revenueByDate(Connection conn, String d_t, String d_t2){
+		String sql = "SELECT D.BookingFee FROM Date D WHERE (D.Date_Time >= ? AND D.Date_Time <= ?)";
 		ArrayList<Integer> revenue = new ArrayList<>();
 		try{
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, d_t);
+			ps.setString(2, d_t2);
+
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()){
 				int fee = rs.getInt("BookingFee");
@@ -909,7 +1006,7 @@ public static boolean deleteUser(Connection conn, String ssn){
 		return null;
 	}
 	
-	public ArrayList<Integer> revenueByName(Connection conn, String first, String last){
+	public static ArrayList<Integer> revenueByName(Connection conn, String first, String last){
 		String sql = "SELECT D.BookingFee FROM Date D, Person P, Profile I WHERE (D.Profile1 = I.ProfileID OR D.Profile2 = I.ProfileID) AND I.OwnerSSN = P.SSN AND P.FirstName = ? AND P.LastName = ?";
 		ArrayList<Integer> revenue = new ArrayList<>();
 		try{
@@ -928,7 +1025,7 @@ public static boolean deleteUser(Connection conn, String ssn){
 		return null;
 	}
 	
-	public Person getHighestRevenueRep(Connection conn){
+	public static Person getHighestRevenueRep(Connection conn){
 		String sql = "SELECT P.* FROM Person P WHERE P.SSN in (SELECT K.CustRep FROM (SELECT T.CustRep, MAX(T.sum) FROM (SELECT J.CustRep, SUM(J.BookingFee) as sum FROM (SELECT D.CustRep, D.BookingFee FROM Date D)J GROUP BY J.CustRep)T )K)";
 		try{
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -1033,8 +1130,8 @@ public static boolean deleteUser(Connection conn, String ssn){
 		return null;
 	}
 
-	public static ArrayList<Person> getCusWhoHaveDated(Connection conn) {
-		String sql = "SELECT DISTINCT P.* FROM Person P, User1 U, Profile Pf, Date D WHERE (D.Profile1=Pf.ProfileID OR D.Profile2=Pf.ProfileID) AND Pf.OwnerSSN=P.SSN";
+	public static ArrayList<Person> getCusWhoHaveDated(Connection conn, String _ssn) {
+		String sql = "SELECT DISTINCT P.* FROM Person P, Profile Pf, Date D WHERE (D.Profile1=Pf.ProfileID OR D.Profile2=Pf.ProfileID) AND Pf.OwnerSSN=P.SSN";
 		ArrayList<Person> cus = new ArrayList<>();
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -1082,7 +1179,6 @@ public static boolean deleteUser(Connection conn, String ssn){
 	
 	//Produce a list of the highest-rated calendar dates to have a date on
 	public static ArrayList<String> getHighestRatedCalendarDate(Connection conn,int n) {
-		
 		String sql = "SELECT CAST(D.Date_Time as Date) AS \"Highest-rated calendar dates\" FROM Date D GROUP BY CAST(D.Date_Time as Date) ORDER BY COUNT(*) DESC LIMIT "+n;
 		ArrayList<String> dates = new ArrayList<>();
 		try {

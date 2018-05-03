@@ -18,18 +18,12 @@
 	
 	   <%@include  file="/WEB-INF/views/manHeader.jsp" %>	
 	   <%@include  file="/WEB-INF/views/manNavigation.jsp" %>	
-	  
-	    <table border="1">
-	    <tr>
-          <th>Date</th>
-  
-       </tr>
-       <c:forEach items="${dates}" var="date" >
-          <tr>
-             <td>${date}</td>
-          </tr>
-       </c:forEach>
-    	</table>
+	   
+<form>
+<input type="text" name="ssn" placeholder="SSN">
+<button type="submit" name="choice" value="People who dated a customer result"> Search </button>
+</form>
+	 
 	   
 	             
 

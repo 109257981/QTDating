@@ -19,16 +19,17 @@
 	   <%@include  file="/WEB-INF/views/manHeader.jsp" %>	
 	   <%@include  file="/WEB-INF/views/manNavigation.jsp" %>	
 	<form method="GET" action="${pageContext.request.contextPath}/ManagerQueryServlet">
-		  <input type="date" name="date"  placeholder="Date">
+		  <input type="date" name="date">
 		  <input type="hidden" name="how" value="date">
-          <button type="submit" name="choice" value="Revenue summary Result">Search by Date</button>
+          <input type="submit" name="choice" value="DateSearchResult">
 	</form>
-	<form method="GET" action="${pageContext.request.contextPath}/ManagerQueryServlet">
-			<input type="text" name="firstName"  placeholder="First Name">
+		<form method="GET" action="${pageContext.request.contextPath}/ManagerQueryServlet">
+		  <input type="text" name="firstName"  placeholder="First Name">
 		  <input type="text" name="lastName"  placeholder="Last Name">
 		  <input type="hidden" name="how" value="name">
-		   <button type="submit" name="choice" value="Revenue summary Result">Search by Name</button>	  
+          <input type="submit" name="choice" value="DateSearchResult">
 	</form>
+	
 	</div>
 	</body>
 </html>

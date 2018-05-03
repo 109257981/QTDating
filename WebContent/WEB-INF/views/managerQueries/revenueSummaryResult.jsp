@@ -17,25 +17,11 @@
 		
 	
 	   <%@include  file="/WEB-INF/views/manHeader.jsp" %>	
-	   <%@include  file="/WEB-INF/views/manNavigation.jsp" %>	
-	  
-	    <table border="1">
-	    <tr>
-          <th>Date</th>
-  
-       </tr>
-       <c:forEach items="${dates}" var="date" >
-          <tr>
-             <td>${date}</td>
-          </tr>
-       </c:forEach>
-    	</table>
+	   <%@include  file="/WEB-INF/views/manNavigation.jsp" %>
 	   
-	             
-
-
-		
-
-		</div>
+	 <h1>  Total Revenue Generated: ${total}</h1>
+	
+	
+	</div>
 	</body>
 </html>
